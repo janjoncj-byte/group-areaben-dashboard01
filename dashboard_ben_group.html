@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1c35">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230f1c35'/><text y='.9em' font-size='72' x='10'>📊</text></svg>">
+<title>Ben Group Sales Dashboard 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0f1c35;--slate:#1e2d4a;--blue:#2563eb;--indigo:#4f46e5;
+  --green:#059669;--amber:#d97706;--rose:#e11d48;--teal:#0d9488;
+  --bg:#f1f5f9;--card:#fff;--border:#e2e8f0;
+  --text:#0f172a;--muted:#64748b;--light:#94a3b8;
+  --r:10px;--sh:0 1px 3px rgba(0,0,0,.08);--sh2:0 4px 16px rgba(0,0,0,.12);
+}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.header{background:linear-gradient(135deg,var(--navy) 0%,#1a3a6b 100%);color:#fff;padding:22px 32px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23ffffff' fill-opacity='0.06'/%3E%3C/svg%3E")}
+.hdr{position:relative;z-index:1;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{width:48px;height:48px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.22);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.hdr-text h1{font-size:20px;font-weight:700}
+.hdr-text p{font-size:12px;color:rgba(255,255,255,.58);margin-top:1px}
+.vat-badge{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(255,255,255,.85);display:inline-flex;align-items:center;gap:4px;margin-top:5px}
+.hdr-stats{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap}
+.hs{text-align:right}.hs-v{font-size:20px;font-weight:700}.hs-l{font-size:10px;color:rgba(255,255,255,.48);text-transform:uppercase;letter-spacing:.5px}
+.hs-v.gr{color:#4ade80}.hs-v.am{color:#fbbf24}
+.month-bar{background:#fff;border-bottom:2px solid var(--border);padding:14px 32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.month-bar-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;margin-right:4px}
+.mpick{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:30px;border:2px solid var(--border);background:#f8fafc;color:var(--muted);font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap;outline:none}
+.mpick:hover{border-color:var(--blue);background:#eff6ff;color:var(--blue);box-shadow:0 2px 8px rgba(37,99,235,.15);transform:translateY(-1px)}
+.mpick.active{border-color:var(--blue);background:var(--blue);color:#fff;box-shadow:0 3px 12px rgba(37,99,235,.35)}
+.mpick.active .mp-ach{background:rgba(255,255,255,.25);color:#fff}
+.mp-icon{font-size:16px}.mp-name{font-weight:700}
+.mp-ach{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;transition:all .18s}
+.month-bar-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
+.dd-select-wrap{display:inline-flex;align-items:center;gap:8px;margin-left:auto}
+.dd-select-label{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+.dd-select{padding:8px 32px 8px 12px;border:2px solid var(--border);border-radius:8px;background:#f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 10px center;-webkit-appearance:none;appearance:none;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;outline:none;min-width:170px}
+.dd-select:hover{border-color:var(--blue)}.dd-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.wrap{max-width:1400px;margin:0 auto;padding:18px 20px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:11px;margin-bottom:14px}
+.kpi{background:var(--card);border-radius:var(--r);padding:15px 17px;box-shadow:var(--sh);border-bottom:3px solid transparent;transition:transform .15s,box-shadow .15s}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:6px}
+.kpi-val{font-size:21px;font-weight:700;line-height:1}.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.k-bl{border-color:var(--blue)}.k-gr{border-color:var(--green)}.k-tl{border-color:var(--teal)}
+.k-in{border-color:var(--indigo)}.k-am{border-color:var(--amber)}.k-ro{border-color:var(--rose)}
+.band-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
+.band{background:var(--card);border-radius:var(--r);padding:13px 15px;box-shadow:var(--sh);display:flex;align-items:center;gap:11px}
+.band-c{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;text-align:center;line-height:1.2}
+.band-i{flex:1}.band-t{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.band-n{font-size:24px;font-weight:700;line-height:1;margin:2px 0}.band-s{font-size:11px;color:var(--muted)}
+/* 4-col panel grid */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
+.panel{background:var(--card);border-radius:var(--r);padding:15px;box-shadow:var(--sh);overflow:hidden}
+.ptitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:11px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.rrow{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f1f5f9}.rrow:last-child{border-bottom:none}
+.rnum{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.rname{flex:1;font-size:11px;line-height:1.3}.rval{font-size:12px;font-weight:700;white-space:nowrap}
+.bw{margin-top:3px;height:3px;background:#f1f5f9;border-radius:2px;overflow:hidden}.bi{height:100%;border-radius:2px}
+.cmp-sum{display:flex;gap:8px;margin-bottom:10px}
+.cmp-box{flex:1;padding:8px 10px;border-radius:7px;border:1px solid var(--border)}
+.cmp-lbl{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.cmp-val{font-size:15px;font-weight:700;margin:2px 0;line-height:1}
+.cmp-sub{font-size:10px;color:var(--muted)}
+.sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin:8px 0 4px}
+.stitle{font-size:13px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;justify-content:space-between}
+.filters{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+.filters input,.filters select{padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;outline:none;background:#fff}
+.filters input:focus,.filters select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.twrap{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.tscroll{overflow-x:auto;max-height:560px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--slate);color:#fff;padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;position:sticky;top:0;z-index:10;cursor:pointer;user-select:none}
+thead th:hover{background:#253a5e}
+thead th.asc::after{content:' ↑'}thead th.desc::after{content:' ↓'}
+.th-sep{background:#152545!important;font-size:9px!important;letter-spacing:.3px!important;padding:6px 12px!important;color:rgba(255,255,255,.5)!important}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:#f8fafc}
+tbody td{padding:8px 12px;white-space:nowrap}
+.abw{display:flex;align-items:center;gap:6px}
+.ab{flex:1;height:5px;background:#f1f5f9;border-radius:3px;overflow:hidden;min-width:38px}
+.abf{height:100%;border-radius:3px}
+.pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:9px;font-size:11px;font-weight:600}
+.pg{background:#dcfce7;color:#15803d}.pb{background:#dbeafe;color:#1d4ed8}
+.pa{background:#fef3c7;color:#b45309}.pr{background:#ffe4e6;color:#be123c}
+.dg{color:var(--green);font-weight:700}.dr{color:var(--rose);font-weight:700}.dm{color:var(--muted)}
+.tr{text-align:right}.tc{text-align:center}
+.nodata{text-align:center;padding:28px;color:var(--muted)}
+.footer{text-align:center;padding:14px;color:var(--muted);font-size:11px}
+/* ── Tooltip ── */
+.rrow{cursor:pointer}
+.tt{position:fixed;background:rgba(12,22,42,.97);color:#fff;border-radius:11px;padding:13px 16px;font-size:12px;line-height:1;pointer-events:none;z-index:9999;max-width:270px;box-shadow:0 8px 24px rgba(0,0,0,.4);display:none;border:1px solid rgba(255,255,255,.1)}
+.tt-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.15)}
+.tt-row{display:flex;justify-content:space-between;align-items:center;gap:22px;padding:3.5px 0}
+.tt-lbl{color:rgba(255,255,255,.5);font-size:11px}
+.tt-val{font-weight:700;font-size:12px}
+.tt-pos{color:#4ade80}.tt-neg{color:#fb7185}.tt-neu{color:#94a3b8}
+.tt-sep{border-top:1px solid rgba(255,255,255,.1);margin:6px 0}
+</style>
+</head>
+<body>
+<div class="tt" id="tt"></div>
+<div class="header">
+  <div class="hdr">
+    <div class="logo">📊</div>
+    <div class="hdr-text">
+      <h1>Ben Group — Sales Performance Dashboard 2026</h1>
+      <p id="hdr-sub"></p>
+      <span class="vat-badge">📌 ยึดจากยอดขายก่อนหัก VAT</span>
+    </div>
+    <div class="hdr-stats">
+      <div class="hs"><div class="hs-v" id="hdr-ach"></div><div class="hs-l">Achievement รวม</div></div>
+      <div class="hs"><div class="hs-v" id="hdr-sales"></div><div class="hs-l">ยอดขายรวม (บาท)</div></div>
+      <div class="hs"><div class="hs-v" id="hdr-yoy"></div><div class="hs-l">เทียบปีที่แล้ว</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="month-bar">
+  <span class="month-bar-label">📅 เลือกเดือน</span>
+  <button class="mpick active" data-key="2026-03" onclick="switchMonth('2026-03')">
+    <span class="mp-icon">📅</span>
+    <span class="mp-name">มีนาคม 2026</span>
+    <span class="mp-ach" style="background:#ffe4e6;color:#be123c">59.61%</span>
+  </button>
+  <div class="month-bar-sep"></div>
+  <div class="dd-select-wrap">
+    <span class="dd-select-label">หรือเลือกจาก</span>
+    <select class="dd-select" id="dd-select" onchange="switchMonth(this.value)">
+<option value="2026-03" selected>มีนาคม 2026</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi k-bl"><div class="kpi-lbl">ยอดขายรวม (ก่อน VAT)</div><div class="kpi-val" id="kv-sales" style="color:var(--blue);font-size:16px"></div><div class="kpi-sub" id="ks-sales"></div></div>
+    <div class="kpi k-gr"><div class="kpi-lbl">Achievement รวม</div><div class="kpi-val" id="kv-ach" style="color:var(--green)"></div><div class="kpi-sub" id="ks-ach"></div></div>
+    <div class="kpi k-in"><div class="kpi-lbl">เทียบปีที่แล้ว (YoY)</div><div class="kpi-val" id="kv-yoy" style="font-size:17px"></div><div class="kpi-sub" id="ks-yoy"></div></div>
+    <div class="kpi k-tl"><div class="kpi-lbl">เทียบเดือนที่แล้ว (MoM)</div><div class="kpi-val" id="kv-mom" style="font-size:17px"></div><div class="kpi-sub" id="ks-mom"></div></div>
+    <div class="kpi k-am"><div class="kpi-lbl">เทียบสัปดาห์ที่แล้ว (WoW)</div><div class="kpi-val" id="kv-wow" style="font-size:17px"></div><div class="kpi-sub" id="ks-wow"></div></div>
+    <div class="kpi k-ro"><div class="kpi-lbl">สาขา ≥ ค่าเฉลี่ยกลุ่ม</div><div class="kpi-val" id="kv-above" style="color:var(--rose)"></div><div class="kpi-sub" id="ks-above"></div></div>
+  </div>
+
+  <!-- Achievement Bands -->
+  <div class="band-grid">
+    <div class="band"><div class="band-c" style="background:#dcfce7;color:#15803d">≥100%</div><div class="band-i"><div class="band-t">บรรลุเป้า</div><div class="band-n" id="bn100" style="color:var(--green)"></div><div class="band-s" id="bs100"></div></div></div>
+    <div class="band"><div class="band-c" style="background:#dbeafe;color:#1d4ed8">90–99%</div><div class="band-i"><div class="band-t">ใกล้เป้า</div><div class="band-n" id="bn90" style="color:var(--blue)"></div><div class="band-s" id="bs90"></div></div></div>
+    <div class="band"><div class="band-c" style="background:#fef3c7;color:#b45309">80–89%</div><div class="band-i"><div class="band-t">ต้องปรับปรุง</div><div class="band-n" id="bn80" style="color:var(--amber)"></div><div class="band-s" id="bs80"></div></div></div>
+    <div class="band"><div class="band-c" style="background:#ffe4e6;color:#be123c">&lt;80%</div><div class="band-i"><div class="band-t">วิกฤต</div><div class="band-n" id="bnlt" style="color:var(--rose)"></div><div class="band-s" id="bslt"></div></div></div>
+  </div>
+
+  <!-- 4 Panels -->
+  <div class="g4">
+    <div class="panel"><div class="ptitle">🏆 Achievement Rankings</div><div id="panel-rank"></div></div>
+    <div class="panel"><div class="ptitle">📅 เปรียบเทียบรายปี (YoY)</div><div id="panel-yoy"></div></div>
+    <div class="panel"><div class="ptitle">📆 เปรียบเทียบรายเดือน</div><div id="panel-mom"></div></div>
+    <div class="panel"><div class="ptitle">📈 เปรียบเทียบรายสัปดาห์</div><div id="panel-wow"></div></div>
+  </div>
+
+  <!-- Table -->
+  <div class="stitle">
+    <span id="tbl-title">📋 ข้อมูลรายสาขา</span>
+    <span id="row-count" style="font-size:12px;color:var(--muted);font-weight:400"></span>
+  </div>
+  <div class="filters">
+    <input id="search" type="text" placeholder="🔍 ค้นหาสาขา..." style="min-width:185px">
+    <select id="af"><option value="">Achievement ทั้งหมด</option><option value="100">≥ 100%</option><option value="90">90–99%</option><option value="80">80–89%</option><option value="low">&lt; 80%</option></select>
+    <select id="yf"><option value="">YoY ทั้งหมด</option><option value="up">↑ ดีขึ้น</option><option value="down">↓ แย่ลง</option></select>
+    <select id="mf"><option value="">MoM ทั้งหมด</option><option value="up">↑ ดีขึ้น</option><option value="down">↓ แย่ลง</option></select>
+  </div>
+  <div class="twrap"><div class="tscroll">
+    <table>
+      <thead><tr>
+        <th data-col="no" class="tc">#</th>
+        <th data-col="shop">สาขา</th>
+        <th data-col="target" class="tr">เป้า</th>
+        <th data-col="sales" class="tr">ยอดขาย (ก่อน VAT)</th>
+        <th data-col="achievement">Achievement</th>
+        <th class="th-sep tc" colspan="2">── YoY (หลังหัก VAT) ──</th>
+        <th class="th-sep tc" colspan="2">── รายเดือน ──</th>
+        <th class="th-sep tc" colspan="2">── รายสัปดาห์ ──</th>
+      </tr>
+      <tr>
+        <th></th><th></th><th></th><th></th><th></th>
+        <th data-col="yoy_dift" class="tr">2024→2025 DIFT</th>
+        <th data-col="yoy_pct"  class="tr">DIFT%</th>
+        <th data-col="m_dift"   class="tr">FEB→MAR DIFT</th>
+        <th data-col="m_pct"    class="tr">DIFT%</th>
+        <th data-col="wk_dift"  class="tr">02-08→09-15 DIFT</th>
+        <th data-col="wk_pct"   class="tr">DIFT%</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div></div>
+  <div class="footer" id="footer"></div>
+</div>
+
+<script>
+const AM = {"2026-03": {"key": "2026-03", "month_th": "มีนาคม", "year": "2026", "period": "01-18 มีนาคม 2026", "rows": [{"no": 1, "shop": "Yuedpao สาขา Mega บางนา", "target": 1100000, "sales": 632593, "achievement": 57.51, "headcount": 3, "spp": 210864, "ivn": 1213, "yoy_24": 601085, "yoy_25": 591208, "yoy_dift": -9877, "yoy_pct": -1.64, "m_feb": 586349, "m_mar": 591208, "m_dift": 4859, "m_pct": 0.83, "wk1": 262322, "wk2": 253042, "wk3": 246980, "wk_dift": -6062, "wk_pct": -2.4, "pct_vs_nat": 97.1, "gap": -467407}, {"no": 2, "shop": "Yuedpao สาขา The Mall โคราช", "target": 850000, "sales": 564616, "achievement": 66.43, "headcount": 3, "spp": 188205, "ivn": 1165, "yoy_24": 498033, "yoy_25": 527679, "yoy_dift": 29646, "yoy_pct": 5.95, "m_feb": 462812, "m_mar": 527679, "m_dift": 64867, "m_pct": 14.02, "wk1": 218412, "wk2": 224403, "wk3": 222312, "wk_dift": -2091, "wk_pct": -0.93, "pct_vs_nat": 86.6, "gap": -285384}, {"no": 3, "shop": "Yuedpao สาขา SIAM SQUARE", "target": 1100000, "sales": 629688, "achievement": 57.24, "headcount": 3, "spp": 209896, "ivn": 1168, "yoy_24": 583127, "yoy_25": 588493, "yoy_dift": 5366, "yoy_pct": 0.92, "m_feb": 575868, "m_mar": 588493, "m_dift": 12625, "m_pct": 2.19, "wk1": 263920, "wk2": 278921, "wk3": 221565, "wk_dift": -57356, "wk_pct": -20.56, "pct_vs_nat": 96.6, "gap": -470312}, {"no": 4, "shop": "Yuedpao สาขา Central ระยอง", "target": 1300000, "sales": 817683, "achievement": 62.9, "headcount": 3, "spp": 272561, "ivn": 1576, "yoy_24": 627907, "yoy_25": 764190, "yoy_dift": 136283, "yoy_pct": 21.7, "m_feb": 748572, "m_mar": 764190, "m_dift": 15618, "m_pct": 2.09, "wk1": 360601, "wk2": 375701, "wk3": 277010, "wk_dift": -98691, "wk_pct": -26.27, "pct_vs_nat": 125.5, "gap": -482317}, {"no": 5, "shop": "Yuedpao สาขา Central โคราช", "target": 600000, "sales": 414181, "achievement": 69.03, "headcount": 2, "spp": 207090, "ivn": 902, "yoy_24": 281267, "yoy_25": 387085, "yoy_dift": 105818, "yoy_pct": 37.62, "m_feb": 351096, "m_mar": 387085, "m_dift": 35989, "m_pct": 10.25, "wk1": 165756, "wk2": 167429, "wk3": 163636, "wk_dift": -3793, "wk_pct": -2.27, "pct_vs_nat": 95.3, "gap": -185819}, {"no": 6, "shop": "Yuedpao สาขา Robinson บุรีรัมย์", "target": 550000, "sales": 398148, "achievement": 72.39, "headcount": 2, "spp": 199074, "ivn": 754, "yoy_24": 265606, "yoy_25": 372100, "yoy_dift": 106494, "yoy_pct": 40.09, "m_feb": 326320, "m_mar": 372100, "m_dift": 45780, "m_pct": 14.03, "wk1": 187814, "wk2": 148197, "wk3": 165772, "wk_dift": 17575, "wk_pct": 11.86, "pct_vs_nat": 91.6, "gap": -151852}, {"no": 7, "shop": "Yuedpao สาขา MAYA เชียงใหม่", "target": 1200000, "sales": 794275, "achievement": 66.19, "headcount": 3, "spp": 264758, "ivn": 1891, "yoy_24": 609360, "yoy_25": 742313, "yoy_dift": 132953, "yoy_pct": 21.82, "m_feb": 696558, "m_mar": 742313, "m_dift": 45755, "m_pct": 6.57, "wk1": 332518, "wk2": 343470, "wk3": 290560, "wk_dift": -52910, "wk_pct": -15.4, "pct_vs_nat": 121.9, "gap": -405725}, {"no": 8, "shop": "Yuedpao สาขา Future Park Rangsit ชั้น 3", "target": 2100000, "sales": 1361331, "achievement": 64.83, "headcount": 4, "spp": 340332, "ivn": 2665, "yoy_24": 1120483, "yoy_25": 1272272, "yoy_dift": 151789, "yoy_pct": 13.55, "m_feb": 1044633, "m_mar": 1272272, "m_dift": 227639, "m_pct": 21.79, "wk1": 528581, "wk2": 590485, "wk3": 487752, "wk_dift": -102733, "wk_pct": -17.4, "pct_vs_nat": 156.7, "gap": -738669}, {"no": 9, "shop": "Yuedpao สาขา Central Festival เชียงใหม่", "target": 500000, "sales": 432844, "achievement": 86.57, "headcount": 2, "spp": 216422, "ivn": 938, "yoy_24": 564264, "yoy_25": 404527, "yoy_dift": -159737, "yoy_pct": -28.31, "m_feb": 650841, "m_mar": 404527, "m_dift": -246314, "m_pct": -37.85, "wk1": 312550, "wk2": 256592, "wk3": 112210, "wk_dift": -144382, "wk_pct": -56.27, "pct_vs_nat": 99.6, "gap": -67156}, {"no": 10, "shop": "Yuedpao สาขา Central พัทยา", "target": 700000, "sales": 487256, "achievement": 69.61, "headcount": 2, "spp": 243628, "ivn": 896, "yoy_24": 407187, "yoy_25": 455379, "yoy_dift": 48192, "yoy_pct": 11.84, "m_feb": 418750, "m_mar": 455379, "m_dift": 36629, "m_pct": 8.75, "wk1": 216852, "wk2": 191130, "wk3": 179450, "wk_dift": -11680, "wk_pct": -6.11, "pct_vs_nat": 112.2, "gap": -212744}, {"no": 11, "shop": "Yuedpao สาขา Central ปิ่นเกล้า", "target": 1700000, "sales": 1089042, "achievement": 64.06, "headcount": 3, "spp": 363014, "ivn": 2363, "yoy_24": 569471, "yoy_25": 1017796, "yoy_dift": 448325, "yoy_pct": 78.73, "m_feb": 1006855, "m_mar": 1017796, "m_dift": 10941, "m_pct": 1.09, "wk1": 495445, "wk2": 480557, "wk3": 371116, "wk_dift": -109441, "wk_pct": -22.77, "pct_vs_nat": 167.1, "gap": -610958}, {"no": 12, "shop": "Yuedpao สาขา I am China Town", "target": 400000, "sales": 198226, "achievement": 49.56, "headcount": 2, "spp": 99113, "ivn": 459, "yoy_24": 0, "yoy_25": 185258, "yoy_dift": 185258, "yoy_pct": 0, "m_feb": 248334, "m_mar": 185258, "m_dift": -63076, "m_pct": -25.4, "wk1": 84540, "wk2": 95997, "wk3": 66004, "wk_dift": -29993, "wk_pct": -31.24, "pct_vs_nat": 45.6, "gap": -201774}, {"no": 13, "shop": "Yuedpao สาขา Robinson ชลบุรี", "target": 950000, "sales": 601437, "achievement": 63.31, "headcount": 3, "spp": 200479, "ivn": 1338, "yoy_24": 0, "yoy_25": 562091, "yoy_dift": 562091, "yoy_pct": 0, "m_feb": 557679, "m_mar": 562091, "m_dift": 4412, "m_pct": 0.79, "wk1": 230972, "wk2": 264505, "wk3": 209378, "wk_dift": -55127, "wk_pct": -20.84, "pct_vs_nat": 92.3, "gap": -348563}, {"no": 14, "shop": "Yuedpao สาขา Big C อำนาจเจริญ", "target": 500000, "sales": 216756, "achievement": 43.35, "headcount": 2, "spp": 108378, "ivn": 456, "yoy_24": 0, "yoy_25": 202576, "yoy_dift": 202576, "yoy_pct": 0, "m_feb": 234319, "m_mar": 202576, "m_dift": -31743, "m_pct": -13.55, "wk1": 76512, "wk2": 94926, "wk3": 85240, "wk_dift": -9686, "wk_pct": -10.2, "pct_vs_nat": 49.9, "gap": -283244}, {"no": 15, "shop": "Yuedpao สาขา Robinson แม่สอด", "target": 950000, "sales": 551641, "achievement": 58.07, "headcount": 2, "spp": 275820, "ivn": 956, "yoy_24": 0, "yoy_25": 515553, "yoy_dift": 515553, "yoy_pct": 0, "m_feb": 479512, "m_mar": 515553, "m_dift": 36041, "m_pct": 7.52, "wk1": 199510, "wk2": 265957, "wk3": 178275, "wk_dift": -87682, "wk_pct": -32.97, "pct_vs_nat": 127.0, "gap": -398359}, {"no": 16, "shop": "Yuedpao สาขา Sermthai Complex มหาสารคาม", "target": 900000, "sales": 472071, "achievement": 52.45, "headcount": 3, "spp": 157357, "ivn": 1007, "yoy_24": 0, "yoy_25": 441188, "yoy_dift": 441188, "yoy_pct": 0, "m_feb": 477356, "m_mar": 441188, "m_dift": -36168, "m_pct": -7.58, "wk1": 210532, "wk2": 181442, "wk3": 188309, "wk_dift": 6867, "wk_pct": 3.78, "pct_vs_nat": 72.4, "gap": -427929}, {"no": 17, "shop": "Yuedpao สาขา Robinson กำแพงเพชร", "target": 1000000, "sales": 113530, "achievement": 11.35, "headcount": 3, "spp": 37843, "ivn": 213, "yoy_24": 0, "yoy_25": 106103, "yoy_dift": 106103, "yoy_pct": 0, "m_feb": 0, "m_mar": 106103, "m_dift": 106103, "m_pct": 0, "wk1": 0, "wk2": 0, "wk3": 0, "wk_dift": 0, "wk_pct": 0, "pct_vs_nat": 17.4, "gap": -886470}], "summary": {"total_sales": 9775318, "total_target": 16400000, "total_hc": 45, "total_branches": 17, "overall_ach": 59.61, "nat_avg": 217229, "above_nat": 6, "below_nat": 11, "b100": 0, "b100_avg": 0, "b100_spct": 0.0, "b90": 0, "b90_avg": 0, "b90_spct": 0.0, "b80": 1, "b80_avg": 86.6, "b80_spct": 4.4, "blt": 16, "blt_avg": 58.0, "blt_spct": 95.6, "tot_yoy_24": 6127790, "tot_yoy_25": 9135811, "tot_yoy_d": 3008021, "tot_yoy_p": 49.09, "tot_feb": 8865854, "tot_mar": 9135811, "tot_m_d": 269957, "tot_m_p": 3.04, "tot_wk1": 4146837, "tot_wk2": 4212754, "tot_wk3": 3465569, "tot_wk_d": -747185, "tot_wk_p": -17.74}, "top5_ach": [{"no": 9, "shop": "Yuedpao สาขา Central Festival เชียงใหม่", "target": 500000, "sales": 432844, "achievement": 86.57, "headcount": 2, "spp": 216422, "ivn": 938, "yoy_24": 564264, "yoy_25": 404527, "yoy_dift": -159737, "yoy_pct": -28.31, "m_feb": 650841, "m_mar": 404527, "m_dift": -246314, "m_pct": -37.85, "wk1": 312550, "wk2": 256592, "wk3": 112210, "wk_dift": -144382, "wk_pct": -56.27, "pct_vs_nat": 99.6, "gap": -67156}, {"no": 6, "shop": "Yuedpao สาขา Robinson บุรีรัมย์", "target": 550000, "sales": 398148, "achievement": 72.39, "headcount": 2, "spp": 199074, "ivn": 754, "yoy_24": 265606, "yoy_25": 372100, "yoy_dift": 106494, "yoy_pct": 40.09, "m_feb": 326320, "m_mar": 372100, "m_dift": 45780, "m_pct": 14.03, "wk1": 187814, "wk2": 148197, "wk3": 165772, "wk_dift": 17575, "wk_pct": 11.86, "pct_vs_nat": 91.6, "gap": -151852}, {"no": 10, "shop": "Yuedpao สาขา Central พัทยา", "target": 700000, "sales": 487256, "achievement": 69.61, "headcount": 2, "spp": 243628, "ivn": 896, "yoy_24": 407187, "yoy_25": 455379, "yoy_dift": 48192, "yoy_pct": 11.84, "m_feb": 418750, "m_mar": 455379, "m_dift": 36629, "m_pct": 8.75, "wk1": 216852, "wk2": 191130, "wk3": 179450, "wk_dift": -11680, "wk_pct": -6.11, "pct_vs_nat": 112.2, "gap": -212744}, {"no": 5, "shop": "Yuedpao สาขา Central โคราช", "target": 600000, "sales": 414181, "achievement": 69.03, "headcount": 2, "spp": 207090, "ivn": 902, "yoy_24": 281267, "yoy_25": 387085, "yoy_dift": 105818, "yoy_pct": 37.62, "m_feb": 351096, "m_mar": 387085, "m_dift": 35989, "m_pct": 10.25, "wk1": 165756, "wk2": 167429, "wk3": 163636, "wk_dift": -3793, "wk_pct": -2.27, "pct_vs_nat": 95.3, "gap": -185819}, {"no": 2, "shop": "Yuedpao สาขา The Mall โคราช", "target": 850000, "sales": 564616, "achievement": 66.43, "headcount": 3, "spp": 188205, "ivn": 1165, "yoy_24": 498033, "yoy_25": 527679, "yoy_dift": 29646, "yoy_pct": 5.95, "m_feb": 462812, "m_mar": 527679, "m_dift": 64867, "m_pct": 14.02, "wk1": 218412, "wk2": 224403, "wk3": 222312, "wk_dift": -2091, "wk_pct": -0.93, "pct_vs_nat": 86.6, "gap": -285384}], "bot5_ach": [{"no": 17, "shop": "Yuedpao สาขา Robinson กำแพงเพชร", "target": 1000000, "sales": 113530, "achievement": 11.35, "headcount": 3, "spp": 37843, "ivn": 213, "yoy_24": 0, "yoy_25": 106103, "yoy_dift": 106103, "yoy_pct": 0, "m_feb": 0, "m_mar": 106103, "m_dift": 106103, "m_pct": 0, "wk1": 0, "wk2": 0, "wk3": 0, "wk_dift": 0, "wk_pct": 0, "pct_vs_nat": 17.4, "gap": -886470}, {"no": 14, "shop": "Yuedpao สาขา Big C อำนาจเจริญ", "target": 500000, "sales": 216756, "achievement": 43.35, "headcount": 2, "spp": 108378, "ivn": 456, "yoy_24": 0, "yoy_25": 202576, "yoy_dift": 202576, "yoy_pct": 0, "m_feb": 234319, "m_mar": 202576, "m_dift": -31743, "m_pct": -13.55, "wk1": 76512, "wk2": 94926, "wk3": 85240, "wk_dift": -9686, "wk_pct": -10.2, "pct_vs_nat": 49.9, "gap": -283244}, {"no": 12, "shop": "Yuedpao สาขา I am China Town", "target": 400000, "sales": 198226, "achievement": 49.56, "headcount": 2, "spp": 99113, "ivn": 459, "yoy_24": 0, "yoy_25": 185258, "yoy_dift": 185258, "yoy_pct": 0, "m_feb": 248334, "m_mar": 185258, "m_dift": -63076, "m_pct": -25.4, "wk1": 84540, "wk2": 95997, "wk3": 66004, "wk_dift": -29993, "wk_pct": -31.24, "pct_vs_nat": 45.6, "gap": -201774}, {"no": 16, "shop": "Yuedpao สาขา Sermthai Complex มหาสารคาม", "target": 900000, "sales": 472071, "achievement": 52.45, "headcount": 3, "spp": 157357, "ivn": 1007, "yoy_24": 0, "yoy_25": 441188, "yoy_dift": 441188, "yoy_pct": 0, "m_feb": 477356, "m_mar": 441188, "m_dift": -36168, "m_pct": -7.58, "wk1": 210532, "wk2": 181442, "wk3": 188309, "wk_dift": 6867, "wk_pct": 3.78, "pct_vs_nat": 72.4, "gap": -427929}, {"no": 3, "shop": "Yuedpao สาขา SIAM SQUARE", "target": 1100000, "sales": 629688, "achievement": 57.24, "headcount": 3, "spp": 209896, "ivn": 1168, "yoy_24": 583127, "yoy_25": 588493, "yoy_dift": 5366, "yoy_pct": 0.92, "m_feb": 575868, "m_mar": 588493, "m_dift": 12625, "m_pct": 2.19, "wk1": 263920, "wk2": 278921, "wk3": 221565, "wk_dift": -57356, "wk_pct": -20.56, "pct_vs_nat": 96.6, "gap": -470312}], "top5_yoy": [{"no": 11, "shop": "Yuedpao สาขา Central ปิ่นเกล้า", "target": 1700000, "sales": 1089042, "achievement": 64.06, "headcount": 3, "spp": 363014, "ivn": 2363, "yoy_24": 569471, "yoy_25": 1017796, "yoy_dift": 448325, "yoy_pct": 78.73, "m_feb": 1006855, "m_mar": 1017796, "m_dift": 10941, "m_pct": 1.09, "wk1": 495445, "wk2": 480557, "wk3": 371116, "wk_dift": -109441, "wk_pct": -22.77, "pct_vs_nat": 167.1, "gap": -610958}, {"no": 6, "shop": "Yuedpao สาขา Robinson บุรีรัมย์", "target": 550000, "sales": 398148, "achievement": 72.39, "headcount": 2, "spp": 199074, "ivn": 754, "yoy_24": 265606, "yoy_25": 372100, "yoy_dift": 106494, "yoy_pct": 40.09, "m_feb": 326320, "m_mar": 372100, "m_dift": 45780, "m_pct": 14.03, "wk1": 187814, "wk2": 148197, "wk3": 165772, "wk_dift": 17575, "wk_pct": 11.86, "pct_vs_nat": 91.6, "gap": -151852}, {"no": 5, "shop": "Yuedpao สาขา Central โคราช", "target": 600000, "sales": 414181, "achievement": 69.03, "headcount": 2, "spp": 207090, "ivn": 902, "yoy_24": 281267, "yoy_25": 387085, "yoy_dift": 105818, "yoy_pct": 37.62, "m_feb": 351096, "m_mar": 387085, "m_dift": 35989, "m_pct": 10.25, "wk1": 165756, "wk2": 167429, "wk3": 163636, "wk_dift": -3793, "wk_pct": -2.27, "pct_vs_nat": 95.3, "gap": -185819}, {"no": 7, "shop": "Yuedpao สาขา MAYA เชียงใหม่", "target": 1200000, "sales": 794275, "achievement": 66.19, "headcount": 3, "spp": 264758, "ivn": 1891, "yoy_24": 609360, "yoy_25": 742313, "yoy_dift": 132953, "yoy_pct": 21.82, "m_feb": 696558, "m_mar": 742313, "m_dift": 45755, "m_pct": 6.57, "wk1": 332518, "wk2": 343470, "wk3": 290560, "wk_dift": -52910, "wk_pct": -15.4, "pct_vs_nat": 121.9, "gap": -405725}, {"no": 4, "shop": "Yuedpao สาขา Central ระยอง", "target": 1300000, "sales": 817683, "achievement": 62.9, "headcount": 3, "spp": 272561, "ivn": 1576, "yoy_24": 627907, "yoy_25": 764190, "yoy_dift": 136283, "yoy_pct": 21.7, "m_feb": 748572, "m_mar": 764190, "m_dift": 15618, "m_pct": 2.09, "wk1": 360601, "wk2": 375701, "wk3": 277010, "wk_dift": -98691, "wk_pct": -26.27, "pct_vs_nat": 125.5, "gap": -482317}], "bot5_yoy": [{"no": 9, "shop": "Yuedpao สาขา Central Festival เชียงใหม่", "target": 500000, "sales": 432844, "achievement": 86.57, "headcount": 2, "spp": 216422, "ivn": 938, "yoy_24": 564264, "yoy_25": 404527, "yoy_dift": -159737, "yoy_pct": -28.31, "m_feb": 650841, "m_mar": 404527, "m_dift": -246314, "m_pct": -37.85, "wk1": 312550, "wk2": 256592, "wk3": 112210, "wk_dift": -144382, "wk_pct": -56.27, "pct_vs_nat": 99.6, "gap": -67156}, {"no": 1, "shop": "Yuedpao สาขา Mega บางนา", "target": 1100000, "sales": 632593, "achievement": 57.51, "headcount": 3, "spp": 210864, "ivn": 1213, "yoy_24": 601085, "yoy_25": 591208, "yoy_dift": -9877, "yoy_pct": -1.64, "m_feb": 586349, "m_mar": 591208, "m_dift": 4859, "m_pct": 0.83, "wk1": 262322, "wk2": 253042, "wk3": 246980, "wk_dift": -6062, "wk_pct": -2.4, "pct_vs_nat": 97.1, "gap": -467407}, {"no": 3, "shop": "Yuedpao สาขา SIAM SQUARE", "target": 1100000, "sales": 629688, "achievement": 57.24, "headcount": 3, "spp": 209896, "ivn": 1168, "yoy_24": 583127, "yoy_25": 588493, "yoy_dift": 5366, "yoy_pct": 0.92, "m_feb": 575868, "m_mar": 588493, "m_dift": 12625, "m_pct": 2.19, "wk1": 263920, "wk2": 278921, "wk3": 221565, "wk_dift": -57356, "wk_pct": -20.56, "pct_vs_nat": 96.6, "gap": -470312}, {"no": 2, "shop": "Yuedpao สาขา The Mall โคราช", "target": 850000, "sales": 564616, "achievement": 66.43, "headcount": 3, "spp": 188205, "ivn": 1165, "yoy_24": 498033, "yoy_25": 527679, "yoy_dift": 29646, "yoy_pct": 5.95, "m_feb": 462812, "m_mar": 527679, "m_dift": 64867, "m_pct": 14.02, "wk1": 218412, "wk2": 224403, "wk3": 222312, "wk_dift": -2091, "wk_pct": -0.93, "pct_vs_nat": 86.6, "gap": -285384}, {"no": 10, "shop": "Yuedpao สาขา Central พัทยา", "target": 700000, "sales": 487256, "achievement": 69.61, "headcount": 2, "spp": 243628, "ivn": 896, "yoy_24": 407187, "yoy_25": 455379, "yoy_dift": 48192, "yoy_pct": 11.84, "m_feb": 418750, "m_mar": 455379, "m_dift": 36629, "m_pct": 8.75, "wk1": 216852, "wk2": 191130, "wk3": 179450, "wk_dift": -11680, "wk_pct": -6.11, "pct_vs_nat": 112.2, "gap": -212744}], "top5_m": [{"no": 8, "shop": "Yuedpao สาขา Future Park Rangsit ชั้น 3", "target": 2100000, "sales": 1361331, "achievement": 64.83, "headcount": 4, "spp": 340332, "ivn": 2665, "yoy_24": 1120483, "yoy_25": 1272272, "yoy_dift": 151789, "yoy_pct": 13.55, "m_feb": 1044633, "m_mar": 1272272, "m_dift": 227639, "m_pct": 21.79, "wk1": 528581, "wk2": 590485, "wk3": 487752, "wk_dift": -102733, "wk_pct": -17.4, "pct_vs_nat": 156.7, "gap": -738669}, {"no": 6, "shop": "Yuedpao สาขา Robinson บุรีรัมย์", "target": 550000, "sales": 398148, "achievement": 72.39, "headcount": 2, "spp": 199074, "ivn": 754, "yoy_24": 265606, "yoy_25": 372100, "yoy_dift": 106494, "yoy_pct": 40.09, "m_feb": 326320, "m_mar": 372100, "m_dift": 45780, "m_pct": 14.03, "wk1": 187814, "wk2": 148197, "wk3": 165772, "wk_dift": 17575, "wk_pct": 11.86, "pct_vs_nat": 91.6, "gap": -151852}, {"no": 2, "shop": "Yuedpao สาขา The Mall โคราช", "target": 850000, "sales": 564616, "achievement": 66.43, "headcount": 3, "spp": 188205, "ivn": 1165, "yoy_24": 498033, "yoy_25": 527679, "yoy_dift": 29646, "yoy_pct": 5.95, "m_feb": 462812, "m_mar": 527679, "m_dift": 64867, "m_pct": 14.02, "wk1": 218412, "wk2": 224403, "wk3": 222312, "wk_dift": -2091, "wk_pct": -0.93, "pct_vs_nat": 86.6, "gap": -285384}, {"no": 5, "shop": "Yuedpao สาขา Central โคราช", "target": 600000, "sales": 414181, "achievement": 69.03, "headcount": 2, "spp": 207090, "ivn": 902, "yoy_24": 281267, "yoy_25": 387085, "yoy_dift": 105818, "yoy_pct": 37.62, "m_feb": 351096, "m_mar": 387085, "m_dift": 35989, "m_pct": 10.25, "wk1": 165756, "wk2": 167429, "wk3": 163636, "wk_dift": -3793, "wk_pct": -2.27, "pct_vs_nat": 95.3, "gap": -185819}, {"no": 10, "shop": "Yuedpao สาขา Central พัทยา", "target": 700000, "sales": 487256, "achievement": 69.61, "headcount": 2, "spp": 243628, "ivn": 896, "yoy_24": 407187, "yoy_25": 455379, "yoy_dift": 48192, "yoy_pct": 11.84, "m_feb": 418750, "m_mar": 455379, "m_dift": 36629, "m_pct": 8.75, "wk1": 216852, "wk2": 191130, "wk3": 179450, "wk_dift": -11680, "wk_pct": -6.11, "pct_vs_nat": 112.2, "gap": -212744}], "bot5_m": [{"no": 9, "shop": "Yuedpao สาขา Central Festival เชียงใหม่", "target": 500000, "sales": 432844, "achievement": 86.57, "headcount": 2, "spp": 216422, "ivn": 938, "yoy_24": 564264, "yoy_25": 404527, "yoy_dift": -159737, "yoy_pct": -28.31, "m_feb": 650841, "m_mar": 404527, "m_dift": -246314, "m_pct": -37.85, "wk1": 312550, "wk2": 256592, "wk3": 112210, "wk_dift": -144382, "wk_pct": -56.27, "pct_vs_nat": 99.6, "gap": -67156}, {"no": 12, "shop": "Yuedpao สาขา I am China Town", "target": 400000, "sales": 198226, "achievement": 49.56, "headcount": 2, "spp": 99113, "ivn": 459, "yoy_24": 0, "yoy_25": 185258, "yoy_dift": 185258, "yoy_pct": 0, "m_feb": 248334, "m_mar": 185258, "m_dift": -63076, "m_pct": -25.4, "wk1": 84540, "wk2": 95997, "wk3": 66004, "wk_dift": -29993, "wk_pct": -31.24, "pct_vs_nat": 45.6, "gap": -201774}, {"no": 14, "shop": "Yuedpao สาขา Big C อำนาจเจริญ", "target": 500000, "sales": 216756, "achievement": 43.35, "headcount": 2, "spp": 108378, "ivn": 456, "yoy_24": 0, "yoy_25": 202576, "yoy_dift": 202576, "yoy_pct": 0, "m_feb": 234319, "m_mar": 202576, "m_dift": -31743, "m_pct": -13.55, "wk1": 76512, "wk2": 94926, "wk3": 85240, "wk_dift": -9686, "wk_pct": -10.2, "pct_vs_nat": 49.9, "gap": -283244}, {"no": 16, "shop": "Yuedpao สาขา Sermthai Complex มหาสารคาม", "target": 900000, "sales": 472071, "achievement": 52.45, "headcount": 3, "spp": 157357, "ivn": 1007, "yoy_24": 0, "yoy_25": 441188, "yoy_dift": 441188, "yoy_pct": 0, "m_feb": 477356, "m_mar": 441188, "m_dift": -36168, "m_pct": -7.58, "wk1": 210532, "wk2": 181442, "wk3": 188309, "wk_dift": 6867, "wk_pct": 3.78, "pct_vs_nat": 72.4, "gap": -427929}, {"no": 13, "shop": "Yuedpao สาขา Robinson ชลบุรี", "target": 950000, "sales": 601437, "achievement": 63.31, "headcount": 3, "spp": 200479, "ivn": 1338, "yoy_24": 0, "yoy_25": 562091, "yoy_dift": 562091, "yoy_pct": 0, "m_feb": 557679, "m_mar": 562091, "m_dift": 4412, "m_pct": 0.79, "wk1": 230972, "wk2": 264505, "wk3": 209378, "wk_dift": -55127, "wk_pct": -20.84, "pct_vs_nat": 92.3, "gap": -348563}], "top5_wk": [{"no": 6, "shop": "Yuedpao สาขา Robinson บุรีรัมย์", "target": 550000, "sales": 398148, "achievement": 72.39, "headcount": 2, "spp": 199074, "ivn": 754, "yoy_24": 265606, "yoy_25": 372100, "yoy_dift": 106494, "yoy_pct": 40.09, "m_feb": 326320, "m_mar": 372100, "m_dift": 45780, "m_pct": 14.03, "wk1": 187814, "wk2": 148197, "wk3": 165772, "wk_dift": 17575, "wk_pct": 11.86, "pct_vs_nat": 91.6, "gap": -151852}, {"no": 16, "shop": "Yuedpao สาขา Sermthai Complex มหาสารคาม", "target": 900000, "sales": 472071, "achievement": 52.45, "headcount": 3, "spp": 157357, "ivn": 1007, "yoy_24": 0, "yoy_25": 441188, "yoy_dift": 441188, "yoy_pct": 0, "m_feb": 477356, "m_mar": 441188, "m_dift": -36168, "m_pct": -7.58, "wk1": 210532, "wk2": 181442, "wk3": 188309, "wk_dift": 6867, "wk_pct": 3.78, "pct_vs_nat": 72.4, "gap": -427929}, {"no": 2, "shop": "Yuedpao สาขา The Mall โคราช", "target": 850000, "sales": 564616, "achievement": 66.43, "headcount": 3, "spp": 188205, "ivn": 1165, "yoy_24": 498033, "yoy_25": 527679, "yoy_dift": 29646, "yoy_pct": 5.95, "m_feb": 462812, "m_mar": 527679, "m_dift": 64867, "m_pct": 14.02, "wk1": 218412, "wk2": 224403, "wk3": 222312, "wk_dift": -2091, "wk_pct": -0.93, "pct_vs_nat": 86.6, "gap": -285384}, {"no": 5, "shop": "Yuedpao สาขา Central โคราช", "target": 600000, "sales": 414181, "achievement": 69.03, "headcount": 2, "spp": 207090, "ivn": 902, "yoy_24": 281267, "yoy_25": 387085, "yoy_dift": 105818, "yoy_pct": 37.62, "m_feb": 351096, "m_mar": 387085, "m_dift": 35989, "m_pct": 10.25, "wk1": 165756, "wk2": 167429, "wk3": 163636, "wk_dift": -3793, "wk_pct": -2.27, "pct_vs_nat": 95.3, "gap": -185819}, {"no": 1, "shop": "Yuedpao สาขา Mega บางนา", "target": 1100000, "sales": 632593, "achievement": 57.51, "headcount": 3, "spp": 210864, "ivn": 1213, "yoy_24": 601085, "yoy_25": 591208, "yoy_dift": -9877, "yoy_pct": -1.64, "m_feb": 586349, "m_mar": 591208, "m_dift": 4859, "m_pct": 0.83, "wk1": 262322, "wk2": 253042, "wk3": 246980, "wk_dift": -6062, "wk_pct": -2.4, "pct_vs_nat": 97.1, "gap": -467407}], "bot5_wk": [{"no": 9, "shop": "Yuedpao สาขา Central Festival เชียงใหม่", "target": 500000, "sales": 432844, "achievement": 86.57, "headcount": 2, "spp": 216422, "ivn": 938, "yoy_24": 564264, "yoy_25": 404527, "yoy_dift": -159737, "yoy_pct": -28.31, "m_feb": 650841, "m_mar": 404527, "m_dift": -246314, "m_pct": -37.85, "wk1": 312550, "wk2": 256592, "wk3": 112210, "wk_dift": -144382, "wk_pct": -56.27, "pct_vs_nat": 99.6, "gap": -67156}, {"no": 15, "shop": "Yuedpao สาขา Robinson แม่สอด", "target": 950000, "sales": 551641, "achievement": 58.07, "headcount": 2, "spp": 275820, "ivn": 956, "yoy_24": 0, "yoy_25": 515553, "yoy_dift": 515553, "yoy_pct": 0, "m_feb": 479512, "m_mar": 515553, "m_dift": 36041, "m_pct": 7.52, "wk1": 199510, "wk2": 265957, "wk3": 178275, "wk_dift": -87682, "wk_pct": -32.97, "pct_vs_nat": 127.0, "gap": -398359}, {"no": 12, "shop": "Yuedpao สาขา I am China Town", "target": 400000, "sales": 198226, "achievement": 49.56, "headcount": 2, "spp": 99113, "ivn": 459, "yoy_24": 0, "yoy_25": 185258, "yoy_dift": 185258, "yoy_pct": 0, "m_feb": 248334, "m_mar": 185258, "m_dift": -63076, "m_pct": -25.4, "wk1": 84540, "wk2": 95997, "wk3": 66004, "wk_dift": -29993, "wk_pct": -31.24, "pct_vs_nat": 45.6, "gap": -201774}, {"no": 4, "shop": "Yuedpao สาขา Central ระยอง", "target": 1300000, "sales": 817683, "achievement": 62.9, "headcount": 3, "spp": 272561, "ivn": 1576, "yoy_24": 627907, "yoy_25": 764190, "yoy_dift": 136283, "yoy_pct": 21.7, "m_feb": 748572, "m_mar": 764190, "m_dift": 15618, "m_pct": 2.09, "wk1": 360601, "wk2": 375701, "wk3": 277010, "wk_dift": -98691, "wk_pct": -26.27, "pct_vs_nat": 125.5, "gap": -482317}, {"no": 11, "shop": "Yuedpao สาขา Central ปิ่นเกล้า", "target": 1700000, "sales": 1089042, "achievement": 64.06, "headcount": 3, "spp": 363014, "ivn": 2363, "yoy_24": 569471, "yoy_25": 1017796, "yoy_dift": 448325, "yoy_pct": 78.73, "m_feb": 1006855, "m_mar": 1017796, "m_dift": 10941, "m_pct": 1.09, "wk1": 495445, "wk2": 480557, "wk3": 371116, "wk_dift": -109441, "wk_pct": -22.77, "pct_vs_nat": 167.1, "gap": -610958}]}};
+let curRows=[], sortCol='no', sortDir=1;
+const $=id=>document.getElementById(id);
+const f=n=>new Intl.NumberFormat('th-TH').format(Math.round(n));
+const fp=n=>{const s=n>=0?'+':''; return s+n.toFixed(2)+'%';};
+const ac=a=>a>=100?'#059669':a>=90?'#2563eb':a>=80?'#d97706':'#e11d48';
+const pc=a=>a>=100?'pg':a>=90?'pb':a>=80?'pa':'pr';
+const dc=v=>v>0?'dg':v<0?'dr':'dm';
+
+function cmpRows(top5, bot5, valKey, pctKey, topLabel, botLabel, posBg, posC, negBg, negC, panel){
+  let h=`<div class="sec-label" style="color:${posC}">${topLabel}</div>`;
+  top5.forEach((r,i)=>{
+    const nm=r.shop.replace('Yuedpao สาขา','').trim();
+    const pct=r[pctKey]; const val=r[valKey];
+    h+=`<div class="rrow" data-idx="${r.no-1}" data-panel="${panel}"><div class="rnum" style="background:${posBg};color:${posC}">${i+1}</div><div class="rname">${nm}<div class="bw"><div class="bi" style="width:${Math.min(Math.abs(pct),100)}%;background:${posC}"></div></div></div><div class="rval" style="color:${posC}">${fp(pct)}</div></div>`;
+  });
+  h+=`<div class="sec-label" style="color:${negC};margin-top:6px">${botLabel}</div>`;
+  bot5.forEach((r,i)=>{
+    const nm=r.shop.replace('Yuedpao สาขา','').trim();
+    const pct=r[pctKey];
+    h+=`<div class="rrow" data-idx="${r.no-1}" data-panel="${panel}"><div class="rnum" style="background:${negBg};color:${negC}">${i+1}</div><div class="rname">${nm}<div class="bw"><div class="bi" style="width:${Math.min(Math.abs(pct),100)}%;background:${negC}"></div></div></div><div class="rval" style="color:${negC}">${fp(pct)}</div></div>`;
+  });
+  return h;
+}
+
+function switchMonth(key){
+  const m=AM[key], S=m.summary; curRows=m.rows;
+  document.querySelectorAll('.mpick').forEach(b=>b.classList.toggle('active',b.dataset.key===key));
+  $('dd-select').value=key;
+
+  $('hdr-sub').textContent=m.period+' • '+S.total_branches+' สาขา';
+  $('hdr-ach').textContent=S.overall_ach+'%'; $('hdr-ach').className='hs-v '+(S.overall_ach>=100?'gr':'am');
+  $('hdr-sales').textContent=f(S.total_sales);
+  $('hdr-yoy').textContent=fp(S.tot_yoy_p); $('hdr-yoy').className='hs-v '+(S.tot_yoy_p>=0?'gr':'am');
+
+  $('kv-sales').textContent=f(S.total_sales); $('ks-sales').textContent='เป้า '+f(S.total_target)+' บาท';
+  $('kv-ach').textContent=S.overall_ach+'%';
+  const d=S.total_sales-S.total_target;
+  $('ks-ach').textContent=(d>=0?'เกินเป้า ':'ต่ำกว่าเป้า ')+f(Math.abs(d))+' บาท';
+
+  $('kv-yoy').textContent=fp(S.tot_yoy_p); $('kv-yoy').style.color=S.tot_yoy_p>=0?'var(--green)':'var(--rose)';
+  $('ks-yoy').textContent='2024: '+f(S.tot_yoy_24)+' → 2025: '+f(S.tot_yoy_25);
+
+  $('kv-mom').textContent=fp(S.tot_m_p); $('kv-mom').style.color=S.tot_m_p>=0?'var(--green)':'var(--rose)';
+  $('ks-mom').textContent='FEB: '+f(S.tot_feb)+' → MAR: '+f(S.tot_mar);
+
+  $('kv-wow').textContent=fp(S.tot_wk_p); $('kv-wow').style.color=S.tot_wk_p>=0?'var(--green)':'var(--rose)';
+  $('ks-wow').textContent='02-08: '+f(S.tot_wk2)+' → 09-15: '+f(S.tot_wk3);
+
+  $('kv-above').textContent=S.above_nat+' / '+S.total_branches;
+  $('ks-above').textContent='สาขาที่ยอด/คน เกินค่าเฉลี่ยกลุ่ม';
+
+  $('bn100').textContent=S.b100; $('bs100').textContent='สาขา • เฉลี่ย '+S.b100_avg+'% • '+S.b100_spct+'% ของยอดรวม';
+  $('bn90').textContent=S.b90;   $('bs90').textContent='สาขา • เฉลี่ย '+S.b90_avg+'% • '+S.b90_spct+'% ของยอดรวม';
+  $('bn80').textContent=S.b80;   $('bs80').textContent='สาขา • เฉลี่ย '+S.b80_avg+'% • '+S.b80_spct+'% ของยอดรวม';
+  $('bnlt').textContent=S.blt;   $('bslt').textContent='สาขา • เฉลี่ย '+S.blt_avg+'% • '+S.blt_spct+'% ของยอดรวม';
+
+  // Panel 1: Rankings
+  let rh='<div class="sec-label" style="color:var(--green)">▲ Top Achievement</div>';
+  m.top5_ach.forEach((r,i)=>{
+    const nm=r.shop.replace('Yuedpao สาขา','').trim();
+    rh+=`<div class="rrow" data-idx="${r.no-1}" data-panel="rank"><div class="rnum" style="background:#dcfce7;color:#15803d">${i+1}</div><div class="rname">${nm}<div class="bw"><div class="bi" style="width:${Math.min(r.achievement,100)}%;background:var(--green)"></div></div></div><div class="rval" style="color:var(--green)">${r.achievement}%</div></div>`;
+  });
+  rh+='<div class="sec-label" style="color:var(--rose);margin-top:6px">▼ Bottom Achievement</div>';
+  m.bot5_ach.forEach((r,i)=>{
+    const nm=r.shop.replace('Yuedpao สาขา','').trim();
+    rh+=`<div class="rrow" data-idx="${r.no-1}" data-panel="rank"><div class="rnum" style="background:#ffe4e6;color:#be123c">${i+1}</div><div class="rname">${nm}<div class="bw"><div class="bi" style="width:${Math.min(r.achievement,100)}%;background:var(--rose)"></div></div></div><div class="rval" style="color:var(--rose)">${r.achievement}%</div></div>`;
+  });
+  $('panel-rank').innerHTML=rh;
+
+  // Panel 2: YoY
+  let yh=`<div class="cmp-sum"><div class="cmp-box" style="border-color:#e0f2fe;background:#f0f9ff"><div class="cmp-lbl">2024 (หลังหักVAT)</div><div class="cmp-val" style="color:var(--muted)">${f(S.tot_yoy_24)}</div></div><div class="cmp-box" style="border-color:#dcfce7;background:#f0fdf4"><div class="cmp-lbl">2025 (หลังหักVAT)</div><div class="cmp-val" style="color:var(--green)">${f(S.tot_yoy_25)}</div></div></div>`;
+  yh+=`<div style="text-align:center;margin-bottom:10px;font-size:13px;font-weight:700">DIFT รวม: <span class="${dc(S.tot_yoy_d)}">${S.tot_yoy_d>=0?'+':''}${f(S.tot_yoy_d)} (${fp(S.tot_yoy_p)})</span></div>`;
+  yh+=cmpRows(m.top5_yoy,m.bot5_yoy,'yoy_dift','yoy_pct','▲ ดีขึ้น','▼ แย่ลง','#dcfce7','#15803d','#ffe4e6','#be123c','yoy');
+  $('panel-yoy').innerHTML=yh;
+
+  // Panel 3: MoM
+  let mh=`<div class="cmp-sum"><div class="cmp-box" style="border-color:#e0f2fe;background:#f0f9ff"><div class="cmp-lbl">FEB'2026</div><div class="cmp-val" style="color:var(--muted)">${f(S.tot_feb)}</div></div><div class="cmp-box" style="border-color:#ede9fe;background:#f5f3ff"><div class="cmp-lbl">MAR'2026</div><div class="cmp-val" style="color:var(--indigo)">${f(S.tot_mar)}</div></div></div>`;
+  mh+=`<div style="text-align:center;margin-bottom:10px;font-size:13px;font-weight:700">DIFT รวม: <span class="${dc(S.tot_m_d)}">${S.tot_m_d>=0?'+':''}${f(S.tot_m_d)} (${fp(S.tot_m_p)})</span></div>`;
+  mh+=cmpRows(m.top5_m,m.bot5_m,'m_dift','m_pct','▲ ดีขึ้น','▼ แย่ลง','#ede9fe','#4f46e5','#ffe4e6','#be123c','mom');
+  $('panel-mom').innerHTML=mh;
+
+  // Panel 4: WoW
+  let wh=`<div class="cmp-sum" style="gap:5px"><div class="cmp-box" style="border-color:#fef3c7;background:#fffbeb;padding:7px 8px"><div class="cmp-lbl">26-01</div><div class="cmp-val" style="color:var(--amber);font-size:13px">${f(S.tot_wk1)}</div></div><div class="cmp-box" style="border-color:#e0f2fe;background:#f0f9ff;padding:7px 8px"><div class="cmp-lbl">02-08</div><div class="cmp-val" style="color:var(--blue);font-size:13px">${f(S.tot_wk2)}</div></div><div class="cmp-box" style="border-color:#dcfce7;background:#f0fdf4;padding:7px 8px"><div class="cmp-lbl">09-15</div><div class="cmp-val" style="color:var(--green);font-size:13px">${f(S.tot_wk3)}</div></div></div>`;
+  wh+=`<div style="text-align:center;margin-bottom:10px;font-size:13px;font-weight:700">02-08→09-15: <span class="${dc(S.tot_wk_d)}">${S.tot_wk_d>=0?'+':''}${f(S.tot_wk_d)} (${fp(S.tot_wk_p)})</span></div>`;
+  wh+=cmpRows(m.top5_wk,m.bot5_wk,'wk_dift','wk_pct','▲ สัปดาห์ดีขึ้น','▼ สัปดาห์แย่ลง','#dcfce7','#15803d','#ffe4e6','#be123c','wow');
+  $('panel-wow').innerHTML=wh;
+
+  $('tbl-title').textContent='📋 ข้อมูลรายสาขา – '+m.period;
+  $('footer').textContent='Ben Group Sales Dashboard 2026 · '+m.period+' · ยึดจากยอดขายก่อนหัก VAT';
+  ['search','af','yf','mf'].forEach(id=>$(id).value='');
+  applyFilters();
+}
+
+function renderTbl(data){
+  const tb=$('tbody');
+  if(!data.length){tb.innerHTML='<tr><td colspan="11" class="nodata">ไม่พบข้อมูล</td></tr>';return;}
+  tb.innerHTML=data.map(r=>{
+    const c=ac(r.achievement),p=pc(r.achievement);
+    const ydc=dc(r.yoy_dift), mdc=dc(r.m_dift), wdc=dc(r.wk_dift);
+    return `<tr data-idx="${r.no-1}" data-panel="table" style="cursor:pointer">
+      <td class="tc" style="color:var(--muted);font-size:12px">${r.no}</td>
+      <td style="font-size:12px;max-width:165px;white-space:normal;line-height:1.3">${r.shop.replace('Yuedpao สาขา','').trim()}</td>
+      <td class="tr" style="font-size:12px;color:var(--muted)">${f(r.target)}</td>
+      <td class="tr" style="font-weight:600">${f(r.sales)}</td>
+      <td style="min-width:130px"><div class="abw"><span class="pill ${p}" style="min-width:54px;justify-content:center">${r.achievement}%</span><div class="ab"><div class="abf" style="width:${Math.min(r.achievement/1.2,100)}%;background:${c}"></div></div></div></td>
+      <td class="tr ${ydc}">${r.yoy_24?f(r.yoy_dift):'—'}</td>
+      <td class="tr ${ydc}">${r.yoy_24?fp(r.yoy_pct):'—'}</td>
+      <td class="tr ${mdc}">${r.m_feb?f(r.m_dift):'—'}</td>
+      <td class="tr ${mdc}">${r.m_feb?fp(r.m_pct):'—'}</td>
+      <td class="tr ${wdc}">${r.wk2?f(r.wk_dift):'—'}</td>
+      <td class="tr ${wdc}">${r.wk2?fp(r.wk_pct):'—'}</td>
+    </tr>`;
+  }).join('');
+  $('row-count').textContent='แสดง '+data.length+' สาขา';
+}
+
+function applyFilters(){
+  const q=$('search').value.toLowerCase(),af=$('af').value,yf=$('yf').value,mf=$('mf').value;
+  let d=curRows.filter(r=>{
+    if(q&&!r.shop.toLowerCase().includes(q)) return false;
+    if(af==='100'&&r.achievement<100) return false;
+    if(af==='90'&&(r.achievement<90||r.achievement>=100)) return false;
+    if(af==='80'&&(r.achievement<80||r.achievement>=90)) return false;
+    if(af==='low'&&r.achievement>=80) return false;
+    if(yf==='up'&&r.yoy_dift<=0) return false;
+    if(yf==='down'&&r.yoy_dift>=0) return false;
+    if(mf==='up'&&r.m_dift<=0) return false;
+    if(mf==='down'&&r.m_dift>=0) return false;
+    return true;
+  });
+  renderTbl([...d].sort((a,b)=>{let va=a[sortCol],vb=b[sortCol];return typeof va==='string'?va.localeCompare(vb,'th')*sortDir:(va-vb)*sortDir;}));
+}
+
+document.querySelectorAll('thead th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const c=th.dataset.col;
+    if(sortCol===c) sortDir*=-1; else{sortCol=c;sortDir=1;}
+    document.querySelectorAll('thead th').forEach(t=>t.classList.remove('asc','desc'));
+    th.classList.add(sortDir===1?'asc':'desc');
+    applyFilters();
+  });
+});
+['search','af','yf','mf'].forEach(id=>$(id).addEventListener('input',applyFilters));
+switchMonth('2026-03');
+
+// ── Tooltip System ──────────────────────────────────────────────
+const tt=$('tt');
+document.addEventListener('mousemove',e=>{
+  if(tt.style.display==='block'){
+    const x=e.clientX+16,y=e.clientY+14;
+    tt.style.left=Math.min(x,window.innerWidth-tt.offsetWidth-12)+'px';
+    tt.style.top=Math.min(y,window.innerHeight-tt.offsetHeight-12)+'px';
+  }
+});
+document.addEventListener('mouseover',e=>{
+  const rw=e.target.closest('[data-idx]');
+  if(!rw){tt.style.display='none';return;}
+  const idx=parseInt(rw.dataset.idx);
+  const panel=rw.dataset.panel;
+  const r=curRows[idx];
+  if(!r)return;
+  const nm=r.shop.replace('Yuedpao สาขา','').trim();
+  let h=`<div class="tt-title">${nm}</div>`;
+  if(panel==='rank'){
+    h+=`<div class="tt-row"><span class="tt-lbl">เป้าหมาย</span><span class="tt-val tt-neu">${f(r.target)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">ยอดขาย (ก่อน VAT)</span><span class="tt-val">${f(r.sales)}</span></div>`;
+    const ac=r.achievement>=100?'tt-pos':r.achievement>=80?'tt-neu':'tt-neg';
+    h+=`<div class="tt-row"><span class="tt-lbl">Achievement</span><span class="tt-val ${ac}">${r.achievement}%</span></div>`;
+    const gp=r.sales-r.target;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">Gap (ยอด-เป้า)</span><span class="tt-val ${gp>=0?'tt-pos':'tt-neg'}">${gp>=0?'+':''}${f(gp)}</span></div>`;
+  } else if(panel==='yoy'){
+    h+=`<div class="tt-row"><span class="tt-lbl">ปี 2024 (หลังหัก VAT)</span><span class="tt-val tt-neu">${f(r.yoy_24)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">ปี 2025 (หลังหัก VAT)</span><span class="tt-val">${f(r.yoy_25)}</span></div>`;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">DIFT ยอดขาย</span><span class="tt-val ${r.yoy_dift>=0?'tt-pos':'tt-neg'}">${r.yoy_dift>=0?'+':''}${f(r.yoy_dift)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">DIFT%</span><span class="tt-val ${r.yoy_pct>=0?'tt-pos':'tt-neg'}">${fp(r.yoy_pct)}</span></div>`;
+  } else if(panel==='mom'){
+    h+=`<div class="tt-row"><span class="tt-lbl">กุมภาพันธ์ (FEB)</span><span class="tt-val tt-neu">${f(r.m_feb)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">มีนาคม (MAR)</span><span class="tt-val">${f(r.m_mar)}</span></div>`;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">DIFT ยอดขาย</span><span class="tt-val ${r.m_dift>=0?'tt-pos':'tt-neg'}">${r.m_dift>=0?'+':''}${f(r.m_dift)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">DIFT%</span><span class="tt-val ${r.m_pct>=0?'tt-pos':'tt-neg'}">${fp(r.m_pct)}</span></div>`;
+  } else if(panel==='wow'){
+    h+=`<div class="tt-row"><span class="tt-lbl">สัปดาห์ 26-01 ม.ค.</span><span class="tt-val tt-neu">${f(r.wk1)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">สัปดาห์ 02-08 มี.ค.</span><span class="tt-val tt-neu">${f(r.wk2)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">สัปดาห์ 09-15 มี.ค.</span><span class="tt-val">${f(r.wk3)}</span></div>`;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">DIFT (wk2→wk3)</span><span class="tt-val ${r.wk_dift>=0?'tt-pos':'tt-neg'}">${r.wk_dift>=0?'+':''}${f(r.wk_dift)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">DIFT%</span><span class="tt-val ${r.wk_pct>=0?'tt-pos':'tt-neg'}">${fp(r.wk_pct)}</span></div>`;
+  } else if(panel==='table'){
+    const gp=r.sales-r.target;
+    const ac2=r.achievement>=100?'tt-pos':r.achievement>=80?'tt-neu':'tt-neg';
+    h+=`<div class="tt-row"><span class="tt-lbl">เป้าหมาย</span><span class="tt-val tt-neu">${f(r.target)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">ยอดขาย (ก่อน VAT)</span><span class="tt-val">${f(r.sales)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">Achievement</span><span class="tt-val ${ac2}">${r.achievement}%</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">Gap (ยอด-เป้า)</span><span class="tt-val ${gp>=0?'tt-pos':'tt-neg'}">${gp>=0?'+':''}${f(gp)}</span></div>`;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">YoY 2024→2025</span><span class="tt-val ${r.yoy_dift>=0?'tt-pos':'tt-neg'}">${r.yoy_24?fp(r.yoy_pct):'—'}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">ยอด 2024 / 2025</span><span class="tt-val tt-neu" style="font-size:11px">${r.yoy_24?f(r.yoy_24)+' / '+f(r.yoy_25):'—'}</span></div>`;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">MoM FEB→MAR</span><span class="tt-val ${r.m_dift>=0?'tt-pos':'tt-neg'}">${r.m_feb?fp(r.m_pct):'—'}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">FEB / MAR</span><span class="tt-val tt-neu" style="font-size:11px">${r.m_feb?f(r.m_feb)+' / '+f(r.m_mar):'—'}</span></div>`;
+    h+=`<div class="tt-sep"></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">WoW wk2→wk3</span><span class="tt-val ${r.wk_dift>=0?'tt-pos':'tt-neg'}">${r.wk2?fp(r.wk_pct):'—'}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">02-08 / 09-15</span><span class="tt-val tt-neu" style="font-size:11px">${r.wk2?f(r.wk2)+' / '+f(r.wk3):'—'}</span></div>`;
+  }
+  tt.innerHTML=h;
+  tt.style.display='block';
+});
+document.addEventListener('mouseout',e=>{
+  if(!e.relatedTarget||!e.relatedTarget.closest('[data-idx]'))tt.style.display='none';
+});
+</script>
+</body></html>
