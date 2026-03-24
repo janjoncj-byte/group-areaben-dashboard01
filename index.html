@@ -110,7 +110,7 @@ tbody td{padding:8px 12px;white-space:nowrap}
     <div class="hdr-text">
       <h1>Ben Group — Sales Performance Dashboard 2026</h1>
       <p id="hdr-sub"></p>
-      <span class="vat-badge">📌 ยึดจากยอดขายก่อนหัก VAT</span>
+      <span class="vat-badge">📌 ยึดจากยอดขายหลังหัก VAT</span>
     </div>
     <div class="hdr-stats">
       <div class="hs"><div class="hs-v" id="hdr-ach"></div><div class="hs-l">Achievement รวม</div></div>
@@ -125,7 +125,7 @@ tbody td{padding:8px 12px;white-space:nowrap}
   <button class="mpick active" data-key="2026-03" onclick="switchMonth('2026-03')">
     <span class="mp-icon">📅</span>
     <span class="mp-name">มีนาคม 2026</span>
-    <span class="mp-ach" style="background:#ffe4e6;color:#be123c">74.51%</span>
+    <span class="mp-ach" style="background:#ffe4e6;color:#be123c">69.64%</span>
   </button>
   <div class="month-bar-sep"></div>
   <div class="dd-select-wrap">
@@ -291,7 +291,7 @@ function switchMonth(key){
   $('panel-wow').innerHTML=wh;
 
   $('tbl-title').textContent='📋 ข้อมูลรายสาขา – '+m.period;
-  $('footer').textContent='Ben Group Sales Dashboard 2026 · '+m.period+' · ยึดจากยอดขายก่อนหัก VAT';
+  $('footer').textContent='Ben Group Sales Dashboard 2026 · '+m.period+' · ยึดจากยอดขายหลังหัก VAT';
   ['search','af','yf','mf'].forEach(id=>$(id).value='');
   applyFilters();
 }
