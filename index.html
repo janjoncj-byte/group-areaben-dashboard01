@@ -140,7 +140,8 @@ tbody td{padding:8px 12px;white-space:nowrap}
   <!-- KPI Cards -->
   <div class="kpi-grid">
     <div class="kpi k-bl"><div class="kpi-lbl">ยอดขายรวม (ก่อน VAT)</div><div class="kpi-val" id="kv-sales" style="color:var(--blue);font-size:16px"></div><div class="kpi-sub" id="ks-sales"></div></div>
-    <div class="kpi k-gr"><div class="kpi-lbl">Achievement รวม</div><div class="kpi-val" id="kv-ach" style="color:var(--green)"></div><div class="kpi-sub" id="ks-ach"></div></div>
+    <div class="kpi k-gr" style="border-color:var(--teal)"><div class="kpi-lbl">ยอดขายหลังหัก VAT</div><div class="kpi-val" id="kv-vat" style="color:var(--teal);font-size:16px"></div><div class="kpi-sub" id="ks-vat"></div></div>
+    <div class="kpi k-gr"><div class="kpi-lbl">Achievement รวม (%TARGET)</div><div class="kpi-val" id="kv-ach" style="color:var(--green)"></div><div class="kpi-sub" id="ks-ach"></div></div>
     <div class="kpi k-in"><div class="kpi-lbl">เทียบปีที่แล้ว (YoY)</div><div class="kpi-val" id="kv-yoy" style="font-size:17px"></div><div class="kpi-sub" id="ks-yoy"></div></div>
     <div class="kpi k-tl"><div class="kpi-lbl">เทียบเดือนที่แล้ว (MoM)</div><div class="kpi-val" id="kv-mom" style="font-size:17px"></div><div class="kpi-sub" id="ks-mom"></div></div>
     <div class="kpi k-am"><div class="kpi-lbl">เทียบสัปดาห์ที่แล้ว (WoW)</div><div class="kpi-val" id="kv-wow" style="font-size:17px"></div><div class="kpi-sub" id="ks-wow"></div></div>
@@ -181,13 +182,14 @@ tbody td{padding:8px 12px;white-space:nowrap}
         <th data-col="shop">สาขา</th>
         <th data-col="target" class="tr">เป้า</th>
         <th data-col="sales" class="tr">ยอดขาย (ก่อน VAT)</th>
-        <th data-col="achievement">Achievement</th>
+        <th data-col="m_mar" class="tr" style="color:#0d9488">หลังหัก VAT</th>
+        <th data-col="achievement">%TARGET (หลังหัก VAT)</th>
         <th class="th-sep tc" colspan="2">── YoY (หลังหัก VAT) ──</th>
         <th class="th-sep tc" colspan="2">── รายเดือน ──</th>
         <th class="th-sep tc" colspan="2">── รายสัปดาห์ ──</th>
       </tr>
       <tr>
-        <th></th><th></th><th></th><th></th><th></th>
+        <th></th><th></th><th></th><th></th><th></th><th></th>
         <th data-col="yoy_dift" class="tr">2024→2025 DIFT</th>
         <th data-col="yoy_pct"  class="tr">DIFT%</th>
         <th data-col="m_dift"   class="tr">FEB→MAR DIFT</th>
@@ -238,9 +240,10 @@ function switchMonth(key){
   $('hdr-yoy').textContent=fp(S.tot_yoy_p); $('hdr-yoy').className='hs-v '+(S.tot_yoy_p>=0?'gr':'am');
 
   $('kv-sales').textContent=f(S.total_sales); $('ks-sales').textContent='เป้า '+f(S.total_target)+' บาท';
+  $('kv-vat').textContent=f(S.tot_mar); $('ks-vat').textContent='ใช้คำนวณ %TARGET';
   $('kv-ach').textContent=S.overall_ach+'%';
-  const d=S.total_sales-S.total_target;
-  $('ks-ach').textContent=(d>=0?'เกินเป้า ':'ต่ำกว่าเป้า ')+f(Math.abs(d))+' บาท';
+  const d=S.tot_mar-S.total_target;
+  $('ks-ach').textContent=(d>=0?'เกินเป้า ':'ต่ำกว่าเป้า ')+f(Math.abs(d))+' บาท (หลังหัก VAT)';
 
   $('kv-yoy').textContent=fp(S.tot_yoy_p); $('kv-yoy').style.color=S.tot_yoy_p>=0?'var(--green)':'var(--rose)';
   $('ks-yoy').textContent='2024: '+f(S.tot_yoy_24)+' → 2025: '+f(S.tot_yoy_25);
@@ -298,7 +301,7 @@ function switchMonth(key){
 
 function renderTbl(data){
   const tb=$('tbody');
-  if(!data.length){tb.innerHTML='<tr><td colspan="11" class="nodata">ไม่พบข้อมูล</td></tr>';return;}
+  if(!data.length){tb.innerHTML='<tr><td colspan="12" class="nodata">ไม่พบข้อมูล</td></tr>';return;}
   tb.innerHTML=data.map(r=>{
     const c=ac(r.achievement),p=pc(r.achievement);
     const ydc=dc(r.yoy_dift), mdc=dc(r.m_dift), wdc=dc(r.wk_dift);
@@ -307,6 +310,7 @@ function renderTbl(data){
       <td style="font-size:12px;max-width:165px;white-space:normal;line-height:1.3">${r.shop.replace('Yuedpao สาขา','').trim()}</td>
       <td class="tr" style="font-size:12px;color:var(--muted)">${f(r.target)}</td>
       <td class="tr" style="font-weight:600">${f(r.sales)}</td>
+      <td class="tr" style="font-weight:600;color:var(--teal)">${f(r.m_mar)}</td>
       <td style="min-width:130px"><div class="abw"><span class="pill ${p}" style="min-width:54px;justify-content:center">${r.achievement}%</span><div class="ab"><div class="abf" style="width:${Math.min(r.achievement/1.2,100)}%;background:${c}"></div></div></div></td>
       <td class="tr ${ydc}">${r.yoy_24?f(r.yoy_dift):'—'}</td>
       <td class="tr ${ydc}">${r.yoy_24?fp(r.yoy_pct):'—'}</td>
@@ -330,7 +334,7 @@ function applyFilters(){
     if(yf==='up'&&r.yoy_dift<=0) return false;
     if(yf==='down'&&r.yoy_dift>=0) return false;
     if(mf==='up'&&r.m_dift<=0) return false;
-    if(mf==='down'&&r.m_dift>=0) return false;
+    if(mf===''down'&&r.m_dift>=0) return false;
     return true;
   });
   renderTbl([...d].sort((a,b)=>{let va=a[sortCol],vb=b[sortCol];return typeof va==='string'?va.localeCompare(vb,'th')*sortDir:(va-vb)*sortDir;}));
@@ -375,11 +379,12 @@ document.addEventListener('mouseover',e=>{
   if(panel==='rank'){
     h+=`<div class="tt-row"><span class="tt-lbl">เป้าหมาย</span><span class="tt-val tt-neu">${f(r.target)}</span></div>`;
     h+=`<div class="tt-row"><span class="tt-lbl">ยอดขาย (ก่อน VAT)</span><span class="tt-val">${f(r.sales)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">ยอดขายหลังหัก VAT</span><span class="tt-val" style="color:#0d9488">${f(r.m_mar)}</span></div>`;
     const ac=r.achievement>=100?'tt-pos':r.achievement>=80?'tt-neu':'tt-neg';
-    h+=`<div class="tt-row"><span class="tt-lbl">Achievement</span><span class="tt-val ${ac}">${r.achievement}%</span></div>`;
-    const gp=r.sales-r.target;
+    h+=`<div class="tt-row"><span class="tt-lbl">%TARGET (หลังหัก VAT)</span><span class="tt-val ${ac}">${r.achievement}%</span></div>`;
+    const gp=r.m_mar-r.target;
     h+=`<div class="tt-sep"></div>`;
-    h+=`<div class="tt-row"><span class="tt-lbl">Gap (ยอด-เป้า)</span><span class="tt-val ${gp>=0?'tt-pos':'tt-neg'}">${gp>=0?'+':''}${f(gp)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">Gap (หลังVAT-เป้า)</span><span class="tt-val ${gp>=0?'tt-pos':'tt-neg'}">${gp>=0?'+':''}${f(gp)}</span></div>`;
   } else if(panel==='yoy'){
     h+=`<div class="tt-row"><span class="tt-lbl">ปี 2024 (หลังหัก VAT)</span><span class="tt-val tt-neu">${f(r.yoy_24)}</span></div>`;
     h+=`<div class="tt-row"><span class="tt-lbl">ปี 2025 (หลังหัก VAT)</span><span class="tt-val">${f(r.yoy_25)}</span></div>`;
@@ -405,8 +410,9 @@ document.addEventListener('mouseover',e=>{
     const ac2=r.achievement>=100?'tt-pos':r.achievement>=80?'tt-neu':'tt-neg';
     h+=`<div class="tt-row"><span class="tt-lbl">เป้าหมาย</span><span class="tt-val tt-neu">${f(r.target)}</span></div>`;
     h+=`<div class="tt-row"><span class="tt-lbl">ยอดขาย (ก่อน VAT)</span><span class="tt-val">${f(r.sales)}</span></div>`;
-    h+=`<div class="tt-row"><span class="tt-lbl">Achievement</span><span class="tt-val ${ac2}">${r.achievement}%</span></div>`;
-    h+=`<div class="tt-row"><span class="tt-lbl">Gap (ยอด-เป้า)</span><span class="tt-val ${gp>=0?'tt-pos':'tt-neg'}">${gp>=0?'+':''}${f(gp)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">ยอดขายหลังหัก VAT</span><span class="tt-val" style="color:#0d9488">${f(r.m_mar)}</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">%TARGET (หลังหัก VAT)</span><span class="tt-val ${ac2}">${r.achievement}%</span></div>`;
+    h+=`<div class="tt-row"><span class="tt-lbl">Gap (หลังVAT-เป้า)</span><span class="tt-val ${gp>=0?'tt-pos':'tt-neg'}">${gp>=0?'+':''}${f(gp)}</span></div>`;
     h+=`<div class="tt-sep"></div>`;
     h+=`<div class="tt-row"><span class="tt-lbl">YoY 2024→2025</span><span class="tt-val ${r.yoy_dift>=0?'tt-pos':'tt-neg'}">${r.yoy_24?fp(r.yoy_pct):'—'}</span></div>`;
     h+=`<div class="tt-row"><span class="tt-lbl">ยอด 2024 / 2025</span><span class="tt-val tt-neu" style="font-size:11px">${r.yoy_24?f(r.yoy_24)+' / '+f(r.yoy_25):'—'}</span></div>`;
