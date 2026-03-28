@@ -263,7 +263,7 @@ function switchMonth(key){
   $('bnlt').textContent=S.blt;   $('bslt').textContent='สาขา • เฉลี่ย '+S.blt_avg+'% • '+S.blt_spct+'% ของยอดรวม';
 
   // Panel 1: Rankings
-  let rh='<div class="sec-label" style="color:var(--green)'>▲ Top Achievement</div>';
+  let rh='<div class="sec-label" style="color:var(--green)">▲ Top Achievement</div>';
   m.top5_ach.forEach((r,i)=>{
     const nm=r.shop.replace('Yuedpao สาขา','').trim();
     rh+=`<div class="rrow" data-idx="${r.no-1}" data-panel="rank"><div class="rnum" style="background:#dcfce7;color:#15803d">${i+1}</div><div class="rname">${nm}<div class="bw"><div class="bi" style="width:${Math.min(r.achievement,100)}%;background:var(--green)"></div></div></div><div class="rval" style="color:var(--green)">${r.achievement}%</div></div>`;
