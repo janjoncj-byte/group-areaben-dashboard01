@@ -107,6 +107,10 @@ tbody td{padding:8px 12px;white-space:nowrap}
 .hdr-dd option{color:#0f172a;background:#fff}
 .dd-select-wrap,.month-bar-sep:has(+ .dd-select-wrap){display:none!important}
 .month-bar{display:none!important}
+.hdr-dd-stock+.hdr-dd{margin-left:22px}
+.stock-panel{max-width:1400px;margin:18px auto 0;padding:16px 22px;background:#fff;border:1px dashed #94a3b8;border-radius:14px;color:#475569;font-size:15px;display:flex;align-items:center;gap:12px}
+.stock-panel b{color:#0f172a}
+.stock-panel .sp-x{margin-left:auto;cursor:pointer;border:none;background:none;font-size:18px;color:#64748b}
 </style>
 </head>
 <body>
@@ -119,6 +123,7 @@ tbody td{padding:8px 12px;white-space:nowrap}
       <p id="hdr-sub"></p>
       <span class="vat-badge">📌 ยึดจากยอดขายหลังหัก VAT</span>
     </div>
+    <div class="hdr-dd hdr-dd-stock"><label for="stock-select">📦 Stock holding</label><select id="stock-select" onchange="showStock(this.value)"></select></div>
     <div class="hdr-dd"><label for="hdr-select">📅 ยอดขายเดือน</label><select id="hdr-select" onchange="switchMonth(this.value)"></select></div>
     <div class="hdr-stats">
       <div class="hs"><div class="hs-v" id="hdr-ach"></div><div class="hs-l">Achievement รวม</div></div>
@@ -201,6 +206,7 @@ tbody td{padding:8px 12px;white-space:nowrap}
   </div>
 </div>
 
+<div id="stock-panel" class="stock-panel" style="display:none"></div>
 <div class="wrap">
   <!-- KPI Cards -->
   <div class="kpi-grid">
@@ -426,6 +432,9 @@ window.onerror=function(msg,src,line,col,err){
   document.body.prepend(d);
 };
 (function(){var s=document.getElementById('hdr-select');if(!s)return;s.innerHTML=Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');var o=switchMonth;switchMonth=function(k){o(k);s.value=k;};})();
+var STOCK={};
+function showStock(k){var p=document.getElementById('stock-panel');if(!k){p.style.display='none';return;}var m=AM[k],lbl=m?(m.month_th+' '+m.year):k;var d=STOCK[k];p.innerHTML='📦 <span>Stock holding เดือน <b>'+lbl+'</b> — '+(d?d:'ยังไม่มีข้อมูล')+'</span><button class="sp-x" onclick="document.getElementById(\'stock-select\').value=\'\';showStock(\'\')">✕</button>';p.style.display='flex';}
+(function(){var s=document.getElementById('stock-select');if(!s)return;s.innerHTML='<option value="">— เลือกเดือน —</option>'+Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');})();
 try{switchMonth('2026-05');}catch(e){window.onerror(e.message,'',0,0,e);}
 
 // ── Tooltip System ──────────────────────────────────────────────
