@@ -111,6 +111,35 @@ tbody td{padding:8px 12px;white-space:nowrap}
 .stock-panel{max-width:1400px;margin:18px auto 0;padding:16px 22px;background:#fff;border:1px dashed #94a3b8;border-radius:14px;color:#475569;font-size:15px;display:flex;align-items:center;gap:12px}
 .stock-panel b{color:#0f172a}
 .stock-panel .sp-x{margin-left:auto;cursor:pointer;border:none;background:none;font-size:18px;color:#64748b}
+.stock-panel.sk-full{display:block;border:1px solid #e2e8f0;border-style:solid;padding:18px 20px}
+.sk-hd{display:flex;align-items:center;gap:14px;margin-bottom:14px;font-size:16px;color:#0f172a}
+.sk-a{margin-left:8px;font-size:13px;background:#eef2ff;color:#3730a3;padding:3px 10px;border-radius:999px;font-weight:600}
+.sk-u{margin-left:auto;font-size:13px;color:#64748b}
+.sk-hd .sp-x{margin-left:0}
+.sk-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.sk-c{border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;background:#f8fafc}
+.sk-l{font-size:12px;color:#64748b;font-weight:600}
+.sk-v{font-size:22px;font-weight:800;color:#0f172a;margin:4px 0}
+.sk-s{font-size:11px;color:#94a3b8}
+.sk-tw{overflow-x:auto}
+.sk-t{width:100%;border-collapse:collapse;font-size:14px}
+.sk-t th{background:#e2e8f0;color:#0f172a;padding:10px;text-align:right;font-weight:700;white-space:nowrap}
+.sk-t td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:right;white-space:nowrap}
+.sk-t th:first-child,.sk-t td:first-child{text-align:center}
+.sk-t .l{text-align:left}
+.sk-n{display:inline-flex;width:28px;height:28px;border:1.5px solid #94a3b8;border-radius:50%;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.sk-top{font-size:11px;color:#94a3b8}
+.sk-bar{width:110px;height:7px;background:#f1f5f9;border-radius:9px;overflow:hidden;margin-left:auto}
+.sk-bar i{display:block;height:100%;border-radius:9px}
+.sk-bar i.r{background:linear-gradient(90deg,#fca5a5,#dc2626)}
+.sk-bar i.o{background:linear-gradient(90deg,#fdba74,#ea580c)}
+.sk-bar i.g{background:#16a34a}
+.sk-st{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid}
+.sk-st.r{color:#dc2626;background:#fef2f2;border-color:#fecaca}
+.sk-st.o{color:#ea580c;background:#fff7ed;border-color:#fed7aa}
+.sk-st.g{color:#15803d;background:#f0fdf4;border-color:#bbf7d0}
+.sk-tot td{background:#e2e8f0;font-weight:800}
+@media(max-width:900px){.sk-cards{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -432,8 +461,22 @@ window.onerror=function(msg,src,line,col,err){
   document.body.prepend(d);
 };
 (function(){var s=document.getElementById('hdr-select');if(!s)return;s.innerHTML=Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');var o=switchMonth;switchMonth=function(k){o(k);s.value=k;};})();
-var STOCK={};
-function showStock(k){var p=document.getElementById('stock-panel');if(!k){p.style.display='none';return;}var m=AM[k],lbl=m?(m.month_th+' '+m.year):k;var d=STOCK[k];p.innerHTML='📦 <span>Stock holding เดือน <b>'+lbl+'</b> — '+(d?d:'ยังไม่มีข้อมูล')+'</span><button class="sp-x" onclick="document.getElementById(\'stock-select\').value=\'\';showStock(\'\')">✕</button>';p.style.display='flex';}
+var STOCK={"2026-08":{"area":"Area 3 : เบน","update":"30 April 2026","rows":[["I am China Town",3746,931410,363000],["Central พัทยา",6330,1424779,770000],["SIAM SQUARE",9077,2183039,1210000],["Central โคราช",4743,984050,550000],["Robinson แม่สอด",7588,1753733,1045000],["MAYA เชียงใหม่",10017,2204920,1320000],["Mega บางนา",7140,1892340,1210000],["Central ปิ่นเกล้า",10954,2766020,1870000],["Big C อำนาจเจริญ",3975,913008,660000],["Robinson บุรีรัมย์",3307,700742,550000],["The Mall โคราช",5788,1195080,990000],["Robinson ชลบุรี",5056,1173630,1012000],["Central ระยอง",6925,1571860,1375000],["Sermthai Complex มหาสารคาม",5993,1350725,1210000],["Future Park Rangsit ชั้น 3",11816,2816660,2640000]]}};
+function showStock(k){var p=document.getElementById('stock-panel');if(!k){p.style.display='none';return;}var m=AM[k],lbl=m?(m.month_th+' '+m.year):k,d=STOCK[k];
+var x='<button class="sp-x" onclick="document.getElementById(\'stock-select\').value=\'\';showStock(\'\')">✕</button>';
+if(!d){p.className='stock-panel';p.innerHTML='📦 <span>Stock holding เดือน <b>'+lbl+'</b> — ยังไม่มีข้อมูล</span>'+x;p.style.display='flex';return;}
+var f=function(n){return Math.round(n).toLocaleString('en-US')},M=function(n){return (n/1e6).toFixed(2)+' M'};
+var R=d.rows.map(function(r){return {s:r[0],q:r[1],v:r[2],t:r[3],x:r[2]/r[3]}}).sort(function(a,b){return b.x-a.x});
+var Q=0,V=0,T=0;R.forEach(function(r){Q+=r.q;V+=r.v;T+=r.t});var avg=V/T,mx=Math.max.apply(null,R.map(function(r){return r.x}));
+var st=function(x){return x>1.5?['r','เกินกำหนด รีบเคลียร์สินค้า']:x>1?['o','เกินมาตรฐานที่กำหนด']:['g','ปกติ']};
+var c=[0,0,0];R.forEach(function(r){c[r.x>1.5?0:r.x>1?1:2]++});
+var card=function(l,vv,s){return '<div class="sk-c"><div class="sk-l">'+l+'</div><div class="sk-v">'+vv+'</div><div class="sk-s">'+s+'</div></div>'};
+var h='<div class="sk-hd"><div><b>📦 Stock holding เดือน '+lbl+'</b> <span class="sk-a">'+d.area+'</span></div><div class="sk-u">Update: '+d.update+'</div>'+x+'</div>';
+h+='<div class="sk-cards">'+card('จำนวนสาขา',R.length,'สาขา')+card('STK รวม',f(Q),'ชิ้น')+card('มูลค่า STOCK',M(V),f(V)+' ฿')+card('TARGET ก่อน VAT',M(T),f(T)+' ฿')+card('ค่าเฉลี่ย',avg.toFixed(2),'เท่าของเป้า')+card('รีบเคลียร์ / เกิน / ปกติ',c.join(' · '),'สาขา')+'</div>';
+h+='<div class="sk-tw"><table class="sk-t"><thead><tr><th>ลำดับ</th><th class="l">สาขา</th><th>จำนวน</th><th>มูลค่า STOCK (฿)</th><th>TARGET ก่อน VAT (฿)</th><th>สัดส่วน</th><th>กี่เท่า</th><th>สถานะ</th></tr></thead><tbody>';
+R.forEach(function(r,i){var s=st(r.x);h+='<tr><td><span class="sk-n">'+(i+1)+'</span></td><td class="l">Yuedpao สาขา '+r.s+(i<3?'<div class="sk-top">Top 3 สินค้าต้องเคลียร์</div>':'')+'</td><td>'+f(r.q)+'</td><td>'+f(r.v)+'</td><td>'+f(r.t)+'</td><td><div class="sk-bar"><i class="'+s[0]+'" style="width:'+(r.x/mx*100).toFixed(1)+'%"></i></div></td><td><b>'+r.x.toFixed(2)+'</b></td><td><span class="sk-st '+s[0]+'">● '+s[1]+'</span></td></tr>'});
+var sa=st(avg);h+='<tr class="sk-tot"><td></td><td class="l">รวมทุกสาขา</td><td>'+f(Q)+'</td><td>'+f(V)+'</td><td>'+f(T)+'</td><td></td><td>'+avg.toFixed(2)+'</td><td><span class="sk-st '+sa[0]+'">● '+sa[1]+'</span></td></tr></tbody></table></div>';
+p.className='stock-panel sk-full';p.innerHTML=h;p.style.display='block';}
 (function(){var s=document.getElementById('stock-select');if(!s)return;s.innerHTML='<option value="">— เลือกเดือน —</option>'+Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');})();
 try{switchMonth('2026-05');}catch(e){window.onerror(e.message,'',0,0,e);}
 
