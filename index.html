@@ -495,14 +495,14 @@ var sa=st(avg);h+='<tr class="sk-tot"><td></td><td class="l">รวมทุก�
 p.className='stock-panel sk-full';p.innerHTML=h;p.style.display='block';}
 (function(){var s=document.getElementById('stock-select');if(!s)return;s.innerHTML='<option value="">— เลือกเดือน —</option>'+Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');})();
 (function(){var o2=switchMonth;switchMonth=function(k){o2(k);var ss=document.getElementById('stock-select');if(ss&&ss.value){ss.value='';showStock('');}};})();
-function viewStock(){var s=document.getElementById('stock-select');if(!s.value){var ks=Object.keys(STOCK);s.value=ks.length?ks[ks.length-1]:curKey;}showStock(s.value);}
-function viewSales(){var s=document.getElementById('stock-select');s.value='';showStock('');}
+function viewStock(){var s=document.getElementById('stock-select');var ks=Object.keys(STOCK).sort();s.value=ks.length?ks[ks.length-1]:curKey;showStock(s.value);}
+function viewSales(){var s=document.getElementById('stock-select');s.value='';if(typeof hideSurvey==='function')hideSurvey();showStock('');switchMonth(Object.keys(AM).sort().pop());}
 var SURVEY={};
 function hideSurvey(){var p=document.getElementById('survey-panel');if(p)p.style.display='none';var s=document.getElementById('survey-select');if(s)s.value='';var b=document.getElementById('btn-survey');if(b)b.classList.remove('active');}
 function showSurvey(k){if(!k){hideSurvey();showStock('');return;}var ss=document.getElementById('stock-select');if(ss)ss.value='';showStock('');document.getElementById('survey-select').value=k;var W=document.querySelector('.wrap');if(W)W.style.display='none';var bY=document.getElementById('btn-sales');if(bY)bY.classList.remove('active');document.getElementById('btn-survey').classList.add('active');window.scrollTo(0,0);var m=AM[k],lbl=m?(m.month_th+' '+m.year):k,d=SURVEY[k],p=document.getElementById('survey-panel');var x='<button class="sp-x" onclick="showSurvey(\'\')">✕</button>';var h='<div class="sk-hd"><div><b>📋 SURVEY เดือน '+lbl+'</b> <span class="sk-a">Group Ben</span></div><div class="sk-u">Update: '+(d&&d.update?d.update:'–')+'</div>'+x+'</div>';h+=d&&d.html?d.html:'<div class="sv-empty">📭 ยังไม่มีข้อมูล SURVEY ของเดือนนี้</div>';p.innerHTML=h;p.style.display='block';}
-function viewSurvey(){var s=document.getElementById('survey-select');if(!s.value){var ks=Object.keys(SURVEY);s.value=ks.length?ks[ks.length-1]:curKey;}showSurvey(s.value);}
+function viewSurvey(){var s=document.getElementById('survey-select');var ks=Object.keys(SURVEY).sort();s.value=ks.length?ks[ks.length-1]:Object.keys(AM).sort().pop();showSurvey(s.value);}
 (function(){var s=document.getElementById('survey-select');if(!s)return;s.innerHTML='<option value="">— เลือกเดือน —</option>'+Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');var o3=switchMonth;switchMonth=function(k){o3(k);if(document.getElementById('survey-select').value)hideSurvey();};})();
-try{switchMonth('2026-05');}catch(e){window.onerror(e.message,'',0,0,e);}
+try{switchMonth(Object.keys(AM).sort().pop());}catch(e){window.onerror(e.message,'',0,0,e);}
 
 // ── Tooltip System ──────────────────────────────────────────────
 const tt=$('tt');
