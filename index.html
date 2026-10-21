@@ -148,6 +148,26 @@ tbody td{padding:8px 12px;white-space:nowrap}
 .tscroll{max-height:none!important;height:auto!important}
 .hdr-dd-survey+.hdr-dd-stock{margin-left:22px}
 .sv-empty{text-align:center;padding:60px 10px;color:#94a3b8;font-size:15px;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc}
+.sv-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.sv-c{border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;background:#fff}
+.sv-v{font-size:30px;font-weight:800;color:#0f172a;margin:6px 0}
+.sv-v.g,.sv-p.g{color:#16a34a}
+.sv-v.r,.sv-p.r{color:#dc2626}
+.sv-p.o{color:#ea580c}
+.sv-p{font-weight:700}
+.sv-box{border:1px solid #e2e8f0;border-radius:12px;overflow:hidden}
+.sv-bh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:14px;color:#0f172a}
+.sv-bh span{font-size:12px;color:#64748b}
+.sv-t td,.sv-t th{text-align:center!important}
+.sv-t .l{text-align:left!important}
+.sv-bar{width:100%;min-width:160px;height:7px;background:#e5e7eb;border-radius:9px;overflow:hidden}
+.sv-bar i{display:block;height:100%;border-radius:9px}
+.sv-bar i.g,.sv-lg i.g{background:#16a34a}
+.sv-bar i.o,.sv-lg i.o{background:#ea8a2e}
+.sv-bar i.r,.sv-lg i.r{background:#dc2626}
+.sv-lg{display:flex;justify-content:flex-end;gap:16px;padding:10px 16px;font-size:12px;color:#64748b}
+.sv-lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+@media(max-width:900px){.sv-cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -497,9 +517,11 @@ p.className='stock-panel sk-full';p.innerHTML=h;p.style.display='block';}
 (function(){var o2=switchMonth;switchMonth=function(k){o2(k);var ss=document.getElementById('stock-select');if(ss&&ss.value){ss.value='';showStock('');}};})();
 function viewStock(){var s=document.getElementById('stock-select');var ks=Object.keys(STOCK).sort();s.value=ks.length?ks[ks.length-1]:curKey;showStock(s.value);}
 function viewSales(){var s=document.getElementById('stock-select');s.value='';if(typeof hideSurvey==='function')hideSurvey();showStock('');switchMonth(Object.keys(AM).sort().pop());}
-var SURVEY={};
+var SURVEY={"2026-01":{"update":"JAN 2026","target":10,"rows":[["Robinson แม่สอด",1396,408],["The Mall งามวงศ์วาน",2662,672],["Sermthai Complex มหาสารคาม",1435,304],["Central อุดรธานี",1955,307],["Central รามอินทรา",1526,228],["Central เวสต์เกต",4036,499],["Seacon Square ศรีนครินทร์",2525,311],["Robinson ร้อยเอ็ด",2237,266],["Central เชียงราย",2002,224],["I am China Town",725,81],["Robinson ราชพฤกษ์",1302,113],["Central ขอนแก่น",3365,198]]}};
+function renderSurvey(d){var f=function(n){return Math.round(n).toLocaleString('en-US')};var R=d.rows.map(function(r){return {s:r[0],b:r[1],n:r[2],p:r[2]/r[1]*100}}).sort(function(a,b){return b.p-a.p});var B=0,N=0;R.forEach(function(r){B+=r.b;N+=r.n});var ov=N/B*100,mx=R[0].p,best=R[0],worst=R[R.length-1];var cl=function(p){p=+p.toFixed(1);return p>=15?'g':p>=10?'o':'r'};var h='<div class="sv-cards"><div class="sv-c"><div class="sk-l">OVERALL %SURVEY</div><div class="sv-v">'+ov.toFixed(1)+'%</div><div class="sk-s">'+f(N)+' responses / '+f(B)+' bills</div></div><div class="sv-c"><div class="sk-l">สาขาที่ทำได้ดีที่สุด</div><div class="sv-v g">'+best.p.toFixed(1)+'%</div><div class="sk-s">'+best.s+'</div></div><div class="sv-c"><div class="sk-l">สาขาที่ต้องปรับปรุง</div><div class="sv-v r">'+worst.p.toFixed(1)+'%</div><div class="sk-s">'+worst.s+'</div></div></div>';h+='<div class="sv-box"><div class="sv-bh"><b>● อัตราการตอบแบบสอบถามต่อบิล (เรียงจากมากไปน้อย)</b><span>เป้าหมาย: ≥'+(d.target||10)+'%</span></div><div class="sk-tw"><table class="sk-t sv-t"><thead><tr><th>#</th><th class="l">สาขา</th><th>จำนวนบิล</th><th>RESPONSES</th><th>%SURVEY</th><th class="l">แถบ</th></tr></thead><tbody>';R.forEach(function(r,i){var c=cl(r.p);h+='<tr><td>'+(i+1)+'</td><td class="l">'+r.s+'</td><td>'+f(r.b)+'</td><td><b>'+f(r.n)+'</b></td><td class="sv-p '+c+'">'+r.p.toFixed(1)+'%</td><td class="l"><div class="sv-bar"><i class="'+c+'" style="width:'+(r.p/mx*100).toFixed(1)+'%"></i></div></td></tr>'});h+='<tr class="sk-tot"><td></td><td class="l">รวมทุกสาขา</td><td>'+f(B)+'</td><td>'+f(N)+'</td><td class="sv-p '+cl(ov)+'">'+ov.toFixed(1)+'%</td><td></td></tr></tbody></table></div><div class="sv-lg"><span><i class="g"></i>≥15% ดีมาก</span><span><i class="o"></i>10-14% พอใช้</span><span><i class="r"></i>&lt;10% ต้องปรับปรุง</span></div></div>';return h;}
+
 function hideSurvey(){var p=document.getElementById('survey-panel');if(p)p.style.display='none';var s=document.getElementById('survey-select');if(s)s.value='';var b=document.getElementById('btn-survey');if(b)b.classList.remove('active');}
-function showSurvey(k){if(!k){hideSurvey();showStock('');return;}var ss=document.getElementById('stock-select');if(ss)ss.value='';showStock('');document.getElementById('survey-select').value=k;var W=document.querySelector('.wrap');if(W)W.style.display='none';var bY=document.getElementById('btn-sales');if(bY)bY.classList.remove('active');document.getElementById('btn-survey').classList.add('active');window.scrollTo(0,0);var m=AM[k],lbl=m?(m.month_th+' '+m.year):k,d=SURVEY[k],p=document.getElementById('survey-panel');var x='<button class="sp-x" onclick="showSurvey(\'\')">✕</button>';var h='<div class="sk-hd"><div><b>📋 SURVEY เดือน '+lbl+'</b> <span class="sk-a">Group Ben</span></div><div class="sk-u">Update: '+(d&&d.update?d.update:'–')+'</div>'+x+'</div>';h+=d&&d.html?d.html:'<div class="sv-empty">📭 ยังไม่มีข้อมูล SURVEY ของเดือนนี้</div>';p.innerHTML=h;p.style.display='block';}
+function showSurvey(k){if(!k){hideSurvey();showStock('');return;}var ss=document.getElementById('stock-select');if(ss)ss.value='';showStock('');document.getElementById('survey-select').value=k;var W=document.querySelector('.wrap');if(W)W.style.display='none';var bY=document.getElementById('btn-sales');if(bY)bY.classList.remove('active');document.getElementById('btn-survey').classList.add('active');window.scrollTo(0,0);var m=AM[k],lbl=m?(m.month_th+' '+m.year):k,d=SURVEY[k],p=document.getElementById('survey-panel');var x='<button class="sp-x" onclick="showSurvey(\'\')">✕</button>';var h='<div class="sk-hd"><div><b>📋 SURVEY เดือน '+lbl+'</b> <span class="sk-a">Group Ben</span></div><div class="sk-u">Update: '+(d&&d.update?d.update:'–')+'</div>'+x+'</div>';h+=d?(d.rows?renderSurvey(d):(d.html||'')):'<div class="sv-empty">📭 ยังไม่มีข้อมูล SURVEY ของเดือนนี้</div>';p.innerHTML=h;p.style.display='block';}
 function viewSurvey(){var s=document.getElementById('survey-select');var ks=Object.keys(SURVEY).sort();s.value=ks.length?ks[ks.length-1]:Object.keys(AM).sort().pop();showSurvey(s.value);}
 (function(){var s=document.getElementById('survey-select');if(!s)return;s.innerHTML='<option value="">— เลือกเดือน —</option>'+Object.keys(AM).map(function(k){return '<option value="'+k+'">'+AM[k].month_th+' '+AM[k].year+'</option>'}).join('');var o3=switchMonth;switchMonth=function(k){o3(k);if(document.getElementById('survey-select').value)hideSurvey();};})();
 try{switchMonth(Object.keys(AM).sort().pop());}catch(e){window.onerror(e.message,'',0,0,e);}
